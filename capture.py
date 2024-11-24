@@ -23,3 +23,23 @@ print(c.fetchall())
 
 # import os
 # print(os.sys.path)
+
+
+
+# tcpdump -nn -r packets.pcap | awk '{print $1, $3, $5}' > packet_summary.txt
+
+
+
+# command works for most packets (use UDP on google search) - but not capture length position inconsistent - maybe can use regex later on
+# sudo tcpdump -nn -i wlan0 | awk '/IP/ {split($3, src, "."); split($5, dst, "."); gsub(":", "", dst[5]); print $1, src[1] "." src[2] "." src[3] "." src[4], src[5], dst[1] "." dst[2] "." dst[3] "." dst[4], dst[5], $8}'
+
+
+'''
+$1 - timestamp
+$3 - src IP address split by .
+$5 - dst IP address split by .
+    - allows to store IP addr and port no. separate
+    src[5], dst[5] - src and dst port no'''
+# sudo tcpdump -nn -i wlan0 | awk '/IP/ {split($3, src, "."); split($5, dst, "."); gsub(":", "", dst[5]); print $1, src[1] "." src[2] "." src[3] "." src[4], src[5], dst[1] "." dst[2] "." dst[3] "." dst[4], dst[5]}' > packet_summary.txt
+
+
