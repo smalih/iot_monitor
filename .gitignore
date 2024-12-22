@@ -1,2 +1,4 @@
 *.txt
 *.pcap
+LockMyIOT/LockMyIOTTests
+LockMyIOT/LockMyIOTUITests
