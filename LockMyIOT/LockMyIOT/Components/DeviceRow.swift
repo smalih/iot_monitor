@@ -21,7 +21,7 @@ struct DeviceRow: View {
                 .padding()
                 .background(Color(hue: 1.0, saturation: 0.0, brightness: 0.888))
                 .cornerRadius(50)
-        
+            
             
             VStack(alignment: .leading) {
                 Text(deviceIP)
@@ -31,29 +31,26 @@ struct DeviceRow: View {
                 Text(deviceName)
                     .bold()
                     .font(.title)
-
+                
             }
             
             Spacer()
             VStack(alignment: .trailing, spacing: 20) {
                 Text(deviceStatus)
-//                    .bold()
+                //                    .bold()
                     .font(.title)
                     .foregroundColor(Color("StatusGreen"))
             }
-            HStack(spacing: 20) {
-                Image(systemName: "arrow.right")
-                    .font(.title)
-                    .frame(width: 20, height: 20)
-                    .padding()
-            }
-        
+            Image(systemName: "arrow.right")
+                .font(.title)
+                .frame(width: 20, height: 20)
+                .padding()
+            
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
     }
 }
-
 
 struct DeviceRow_Preiews: PreviewProvider {
     static var previews: some View {
