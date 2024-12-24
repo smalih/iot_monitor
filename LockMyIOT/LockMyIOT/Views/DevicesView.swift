@@ -25,13 +25,13 @@ struct DevicesView: View {
                 
                 NavigationStack {
                     List {
-                        DeviceRow(deviceType: "Phone", deviceName: "Test 1", deviceStatus: "Secure", deviceIP: "192.168.1")
+                        DeviceRow(device: DeviceBody(deviceName: "iPhone 12 Pro", deviceType: "Phone", deviceIP: "192.168.1.1", deviceStatus: "Secure"))
                             .listRowInsets(EdgeInsets())
 //                            .background(Color.indigo)
 
                         
                             
-                        DeviceRow(deviceType: "Phone", deviceName: "Test 1", deviceStatus: "Secure", deviceIP: "192.168.1")
+                       DeviceRow(device: DeviceBody(deviceName: "iPhone 12 Prrerro", deviceType: "Phone", deviceIP: "192.168.1.2", deviceStatus: "Secure"))
                             .listRowInsets(EdgeInsets())
                     }
                     .listStyle(PlainListStyle())
