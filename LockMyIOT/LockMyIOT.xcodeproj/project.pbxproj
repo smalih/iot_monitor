@@ -29,20 +29,85 @@
 		98506D372D18A07000DAEFB3 /* LockMyIOTUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LockMyIOTUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		98506D1F2D18A06E00DAEFB3 /* LockMyIOT */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = LockMyIOT;
-			sourceTree = "<group>";
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		98FAE6BB2D1E16530008FE53 /* Exceptions for "LockMyIOT" folder in "LockMyIOT" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Assets.xcassets,
+				Components/DeviceListItemView.swift,
+				Extensions.swift,
+				LockMyIOTApp.swift,
+				Managers/DeviceResponse.swift,
+				"Preview Content/deviceData.json",
+				"Preview Content/ModelDeviceData.swift",
+				"Preview Content/Preview Assets.xcassets",
+				ViewModels/DeviceListViewModel.swift,
+				Views/ContentView.swift,
+				Views/DeviceDetailView.swift,
+				Views/DeviceListView.swift,
+				Views/LoadingView.swift,
+				Views/WelcomeView.swift,
+			);
+			target = 98506D1C2D18A06E00DAEFB3 /* LockMyIOT */;
 		};
+		98FAE6BC2D1E16530008FE53 /* Exceptions for "LockMyIOT" folder in "LockMyIOTTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Managers/DeviceResponse.swift,
+				ViewModels/DeviceListViewModel.swift,
+			);
+			target = 98506D2C2D18A07000DAEFB3 /* LockMyIOTTests */;
+		};
+		98FAE6BD2D1E16530008FE53 /* Exceptions for "LockMyIOT" folder in "LockMyIOTUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Assets.xcassets,
+				Components/DeviceListItemView.swift,
+				Extensions.swift,
+				LockMyIOTApp.swift,
+				Managers/DeviceResponse.swift,
+				"Preview Content/deviceData.json",
+				"Preview Content/ModelDeviceData.swift",
+				"Preview Content/Preview Assets.xcassets",
+				Views/ContentView.swift,
+				Views/DeviceDetailView.swift,
+				Views/DeviceListView.swift,
+				Views/LoadingView.swift,
+				Views/WelcomeView.swift,
+			);
+			target = 98506D362D18A07000DAEFB3 /* LockMyIOTUITests */;
+		};
+		98FAE6C42D1E17360008FE53 /* Exceptions for "LockMyIOTTests" folder in "LockMyIOT" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				DeviceFactory.swift,
+			);
+			target = 98506D1C2D18A06E00DAEFB3 /* LockMyIOT */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
 		98506D302D18A07000DAEFB3 /* LockMyIOTTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				98FAE6C42D1E17360008FE53 /* Exceptions for "LockMyIOTTests" folder in "LockMyIOT" target */,
+			);
 			path = LockMyIOTTests;
 			sourceTree = "<group>";
 		};
 		98506D3A2D18A07000DAEFB3 /* LockMyIOTUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = LockMyIOTUITests;
+			sourceTree = "<group>";
+		};
+		98FAE6AC2D1E16530008FE53 /* LockMyIOT */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				98FAE6BB2D1E16530008FE53 /* Exceptions for "LockMyIOT" folder in "LockMyIOT" target */,
+				98FAE6BC2D1E16530008FE53 /* Exceptions for "LockMyIOT" folder in "LockMyIOTTests" target */,
+				98FAE6BD2D1E16530008FE53 /* Exceptions for "LockMyIOT" folder in "LockMyIOTUITests" target */,
+			);
+			path = LockMyIOT;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -75,7 +140,7 @@
 		98506D142D18A06E00DAEFB3 = {
 			isa = PBXGroup;
 			children = (
-				98506D1F2D18A06E00DAEFB3 /* LockMyIOT */,
+				98FAE6AC2D1E16530008FE53 /* LockMyIOT */,
 				98506D302D18A07000DAEFB3 /* LockMyIOTTests */,
 				98506D3A2D18A07000DAEFB3 /* LockMyIOTUITests */,
 				98506D1E2D18A06E00DAEFB3 /* Products */,
@@ -106,9 +171,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				98506D1F2D18A06E00DAEFB3 /* LockMyIOT */,
 			);
 			name = LockMyIOT;
 			packageProductDependencies = (
@@ -155,6 +217,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				98506D3A2D18A07000DAEFB3 /* LockMyIOTUITests */,
+				98FAE6AC2D1E16530008FE53 /* LockMyIOT */,
 			);
 			name = LockMyIOTUITests;
 			packageProductDependencies = (
