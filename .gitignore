@@ -2,3 +2,6 @@
 *.pcap
 LockMyIOT/LockMyIOTTests
 LockMyIOT/LockMyIOTUITests
+*.db
+.env
+venv/
