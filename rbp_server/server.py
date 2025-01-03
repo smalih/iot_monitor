@@ -42,14 +42,14 @@ cur.execute("CREATE TABLE packets (id serial PRIMARY KEY,"
                                     "dest_ip_addr inet NOT NULL);")
 # Insert data into the table
 cur.execute("INSERT INTO devices (mac_addr, ip_addr, name, type, status)"
-            "VALUES (%s, %s, %s),"
+            "VALUES (%s, %s, %s, %s, %s)",
             ("01:23:45:67:89:AB",
              "192.168.0.1",
              "Test Phone 2",
              "Phone",
              "DEFAULT")
             )
-
+ 
 conn.commit()
 
 cur.close()
@@ -61,7 +61,8 @@ conn.close()
 def get_devices():
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute("SELECT mac_addr, ip_addr FROM devices;")
+    # cur.execute("SELECT mac_addr, ip_addr FROM devices;")
+    cur.execute("SELECT * FROM devices;")
     devices = cur.fetchall()
     cur.close()
     conn.close()
@@ -92,3 +93,6 @@ def add_device():
 @app.route("/")
 def index():
     return render_template("index.html")
+
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", port=5000, debug=True)
