@@ -41,12 +41,13 @@ cur.execute("CREATE TABLE packets (id serial PRIMARY KEY,"
                                     "source_ip_addr inet NOT NULL,"
                                     "dest_ip_addr inet NOT NULL);")
 # Insert data into the table
-
-cur.execute("INSERT INTO devices (mac_addr, ip_addr, name)"
-            "VALUES (%s, %s, %s)",
+cur.execute("INSERT INTO devices (mac_addr, ip_addr, name, type, status)"
+            "VALUES (%s, %s, %s),"
             ("01:23:45:67:89:AB",
              "192.168.0.1",
-             "Test Phone 2")
+             "Test Phone 2",
+             "Phone",
+             "DEFAULT")
             )
 
 conn.commit()
