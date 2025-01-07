@@ -1,3 +1,3 @@
-#!/bin/bash
+#!/bin/sh
 
-cat /var/lib/NetworkManager/dnsmasq-wlan0.leases
+sudo cat /var/lib/NetworkManager/dnsmasq-wlan0.leases
