@@ -30,7 +30,8 @@ cur.execute("DROP TABLE IF EXISTS devices, packets;")
 #                                  "date_added date DEFAULT CURRENT_TIMESTAMP);"
 #                                  )
 
-cur.execute("CREATE TABLE devices (mac_addr macaddr PRIMARY KEY,"
+cur.execute("CREATE TABLE devices (id SERIAL PRIMARY KEY,"
+                                    "mac_addr macaddr UNIQUE NOT NULL,"
                                     "ip_addr inet UNIQUE NOT NULL,"
                                     "name varchar (60) NOT NULL,"
                                     "type varchar (60) NOT NULL,"
@@ -41,13 +42,12 @@ cur.execute("CREATE TABLE packets (id serial PRIMARY KEY,"
                                     "source_ip_addr inet NOT NULL,"
                                     "dest_ip_addr inet NOT NULL);")
 # Insert data into the table
-cur.execute("INSERT INTO devices (mac_addr, ip_addr, name, type, status)"
-            "VALUES (%s, %s, %s, %s, %s)",
+cur.execute("INSERT INTO devices (mac_addr, ip_addr, name, type)"
+            "VALUES (%s, %s, %s, %s)",
             ("01:23:45:67:89:AB",
              "192.168.0.1",
              "Test Phone 2",
-             "Phone",
-             "DEFAULT")
+             "Phone")
             )
  
 conn.commit()
@@ -61,28 +61,63 @@ conn.close()
 def get_devices():
     conn = get_db_connection()
     cur = conn.cursor()
-    # cur.execute("SELECT mac_addr, ip_addr FROM devices;")
-    cur.execute("SELECT * FROM devices;")
-    devices = cur.fetchall()
+    cur.execute("SELECT json_agg(row_to_json(t)) FROM (SELECT * FROM devices) t;")
+    devices = cur.fetchone()[0]
     cur.close()
     conn.close()
     print(devices)
     return devices
 
-@app.route("/add", methods=['POST'])
+@app.route("/addDevice", methods=['POST'])
 def add_device():
     device_info = request.json
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute("INSERT INTO devices (mac_addr, ip_addr, name, type, status)"
+    cur.execute("INSERT INTO devices (mac_addr, ip_addr, name, type)"
                 "VALUES (%s, %s, %s, %s)",
                 (device_info['macAddr'],
                 device_info['ipAddr'],
                 device_info['name'],
+                device_info['type'])
+                )
+    conn.commit()
+    cur.close()
+    conn.close()
+
+
+
+@app.route("/mockInsert")
+def insert_mock_device():
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("INSERT INTO devices (mac_addr, ip_addr, name, type, status)"
+            "VALUES (%s, %s, %s, %s, %s)",
+            ("01:24:45:67:89:AB",
+             "192.168.0.5",
+             "Test Phone 8",
+             "Phone",
+             "DEFAULT")
+            )
+    conn.commit()
+    cur.close()
+    conn.close()
+    return redirect(url_for("get_devices"))
+
+@app.route("/update", methods=['POST'])
+def update_device():
+    device_info = request.json
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("UPDATE devices "
+                "SET name = %s,"
+                 "type = %s "
+                "WHERE id = %s;",
+                (device_info['name'],
                 device_info['type'],
-                device_info['status'])
+                device_info['id'])
                 )
     
+    conn.commit()
     cur.close()
     conn.close()
     return redirect(url_for("index"))
