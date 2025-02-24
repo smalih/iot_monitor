@@ -1,9 +1,12 @@
 import os
 import psycopg2
+import psycopg2.extras
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from pydantic import BaseModel
 from enum import Enum
+
+from scripts.devices import get_lease_device_info
 
 class DeviceType(Enum):
     PHONE = "PHONE"
@@ -36,19 +39,12 @@ cur = conn.cursor()
 
 # Execute a command: this creates a new table
 cur.execute("DROP TABLE IF EXISTS devices, packets;")
-# cur.execute("CREATE TABLE books (id serial PRIMARY KEY,"
-#                                  "title varchar (150) NOT NULL,"
-#                                  "author varchar (50) NOT NULL,"
-#                                  "pages_num integer NOT NULL,"
-#                                  "review text,"
-#                                  "date_added date DEFAULT CURRENT_TIMESTAMP);"
-#                                  )
 
 cur.execute("CREATE TABLE devices (id SERIAL PRIMARY KEY,"
                                     "mac_addr macaddr UNIQUE NOT NULL,"
-                                    "ip_addr inet UNIQUE NOT NULL,"
-                                    "name varchar (60) NOT NULL,"
-                                    "type varchar (60) NOT NULL,"
+                                    "ip_addr inet NOT NULL,"
+                                    "name varchar (60) DEFAULT 'UNKNOWN',"
+                                    "type varchar (60) DEFAULT 'OTHER',"
                                     "status varchar (8) DEFAULT 'SECURE');"
                                     )
 
@@ -82,6 +78,8 @@ async def get_devices():
     print(devices)
     return devices
 
+# this doesn't make sense - app is simply an interface
+# does not add any devices - all data comes from server
 @app.post("/addDevice/")
 def add_device(device_info: DeviceInfo):
     conn = get_db_connection()
@@ -139,7 +137,45 @@ def update_device(device_info: DeviceInfo):
 
 
 
+@app.get("/temp")
+def update_device_names():
+    lease_device_info = get_lease_device_info()
+    if lease_device_info is not None:
+        conn = get_db_connection()
+        cur = conn.cursor()
 
+        for device_info in lease_device_info:
 
-# if __name__ == '__main__':
-#     app.run(host="0.0.0.0", port=5000, debug=True)
+            # insert full information if mac_addr not previously recognised
+            cur.execute("INSERT INTO devices (mac_addr, ip_addr, name) "
+                        "VALUES (%s, %s, %s) "
+                        "ON CONFLICT (mac_addr) DO NOTHING;",
+                        (device_info.mac_addr,
+                        device_info.ip_addr,
+                        device_info.name)
+                        )
+            
+            # update device ip_addr and name
+            cur.execute("UPDATE devices SET "
+                        "ip_addr = %s, "
+                        "name = CASE  "
+                        "WHEN name = 'UNKNOWN' THEN %s "
+                        "ELSE name "
+                        "END "
+                        "WHERE mac_addr = %s;",
+                        (device_info.ip_addr,
+                        device_info.name,
+                        device_info.mac_addr)
+                        )
+            
+        conn.commit()
+        cur.close()
+        conn.close()
+        return "Update successful"
+
+# id SERIAL PRIMARY KEY,"
+#                                     "mac_addr macaddr UNIQUE NOT NULL,"
+#                                     "ip_addr inet UNIQUE NOT NULL,"
+#                                     "name varchar (60),"
+#                                     "type varchar (60) DEFAULT 'OTHER',"
+#                                     "status varchar (8) DEFAULT 'SECURE')
