@@ -34,14 +34,14 @@ struct DeviceListView: View {
                         }
                     }
                 
-                    HStack {
-                        Text("Sticky footer")
-                            .padding()
-                            .background(.green)
-                            .foregroundStyle(.blue)
-                            .cornerRadius(10)
-                            .frame(maxWidth: .infinity)
-                    }
+//                    HStack {
+//                        Text("Sticky footer")
+//                            .padding()
+//                            .background(.green)
+//                            .foregroundStyle(.blue)
+//                            .cornerRadius(10)
+//                            .frame(maxWidth: .infinity)
+//                    }
                 }
                 .padding(.horizontal)
             }

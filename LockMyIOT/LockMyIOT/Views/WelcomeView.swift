@@ -8,8 +8,15 @@
 import SwiftUI
 
 struct WelcomeView: View {
+    @State private var serverURL: String = ""
+    @State private var serverPort: String = ""
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Form {
+            TextField("Server URL", text: $serverURL)
+
+            TextField("Port", text: $serverPort)
+        }
     }
 }
 

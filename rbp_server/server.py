@@ -3,6 +3,8 @@ import psycopg2
 from dotenv import load_dotenv
 from flask import Flask, url_for, redirect, render_template, request
 
+from scripts.devices import update_device_list
+
 
 load_dotenv()
 app = Flask(__name__)
@@ -55,6 +57,11 @@ conn.commit()
 cur.close()
 conn.close()
 
+
+
+@app.route("/updateDevices")
+def update_devices():
+    update_device_list()
 
 
 @app.route("/devices")
