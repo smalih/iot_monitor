@@ -6,6 +6,8 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from enum import Enum
 
+import json
+
 from scripts.devices import get_lease_device_info
 
 class DeviceType(Enum):
@@ -57,7 +59,7 @@ cur.execute("INSERT INTO devices (mac_addr, ip_addr, name, type)"
             ("01:23:45:67:89:AB",
              "192.168.0.1",
              "Test Phone 2",
-             "Phone")
+             "PHONE")
             )
  
 conn.commit()
@@ -144,6 +146,7 @@ def update_device_names():
         conn = get_db_connection()
         cur = conn.cursor()
 
+        # may change to batch update later on
         for device_info in lease_device_info:
 
             # insert full information if mac_addr not previously recognised
