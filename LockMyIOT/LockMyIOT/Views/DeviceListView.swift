@@ -14,11 +14,12 @@ struct DeviceListView: View {
     
     var body: some View {
         ZStack (alignment: .leading) {
+            
             NavigationStack {
                 VStack(alignment: .trailing) {
                     HStack {
                         
-                        Text("My Devices")
+                        Text("My Devices - \(serverIp)")
                             .bold().font(.title)
                         Spacer()
                         Image(systemName: "bell.badge.fill")

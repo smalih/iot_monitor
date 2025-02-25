@@ -8,6 +8,13 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    
+    @AppStorage("isFirstLaunch") private var isFirstLaunch = true
+    @AppStorage("serverIp") private var serverIp = ""
+    @AppStorage("serverPort") private var serverPort = ""
+    
+    @State private var checkWelcomeScreen: Bool = true
     var body: some View {
 //        VStack {
 //            Image(systemName: "globe")
@@ -15,9 +22,20 @@ struct ContentView: View {
 //                .foregroundStyle(.tint)
 //            Text("Hello, world!")
 //        }
-//        .padding()
+//        .padding()WHat
 //        DeviceListView()
-        WelcomeView()
+        
+        VStack {
+            if checkWelcomeScreen        {
+                WelcomeView()
+            } else {
+                DeviceListView(serverIp: serverIp, serverPort: serverPort)
+            }
+        }
+        .onAppear {
+            checkWelcomeScreen = isFirstLaunch
+        }
+        
     }
 }
 
