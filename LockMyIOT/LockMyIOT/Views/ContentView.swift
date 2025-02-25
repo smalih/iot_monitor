@@ -16,7 +16,8 @@ struct ContentView: View {
 //            Text("Hello, world!")
 //        }
 //        .padding()
-        DeviceListView()
+//        DeviceListView()
+        WelcomeView()
     }
 }
 

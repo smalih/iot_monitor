@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct DeviceListView: View {
+    let serverIp: String
+    let serverPort: String
     @StateObject var viewModel = DeviceListViewModel()
     
     var body: some View {
@@ -48,12 +50,12 @@ struct DeviceListView: View {
         }
         .onAppear {
             Task {
-                await viewModel.fetchDevices()
+                await viewModel.fetchDevices(serverIp: serverIp, serverPort: serverPort)
             }
         }
     }
 }
 
 #Preview("Devices View") {
-    DeviceListView()
+    DeviceListView(serverIp: "192.168.1.30", serverPort: "8000")
 }

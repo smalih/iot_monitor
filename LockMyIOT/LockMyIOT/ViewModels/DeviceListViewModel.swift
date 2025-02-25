@@ -34,7 +34,7 @@ final class DeviceListViewModel: ObservableObject {
 //        }
 //    }
     @MainActor
-    func fetchDevices() async {
+    func fetchDevices(serverIp: String, serverPort: String) async {
         
         
 //        let jsonString = """
@@ -73,7 +73,7 @@ final class DeviceListViewModel: ObservableObject {
         
         
         // Ensure the URL is properly formatted
-        guard let url = URL(string: "http://192.168.1.30:8000/devices") else {
+        guard let url = URL(string: "http://\(serverIp):\(serverPort)/devices") else {
             print("Invalid URL")
             return
         }

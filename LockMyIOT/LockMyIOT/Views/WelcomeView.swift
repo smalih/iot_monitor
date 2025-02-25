@@ -8,14 +8,28 @@
 import SwiftUI
 
 struct WelcomeView: View {
-    @State private var serverURL: String = ""
+    @State private var serverIp: String = ""
     @State private var serverPort: String = ""
-    
+    @State private var isNavigating = false
     var body: some View {
-        Form {
-            TextField("Server URL", text: $serverURL)
-
-            TextField("Port", text: $serverPort)
+        NavigationStack {
+            Form {
+                TextField("Server IP", text: $serverIp)
+                
+                TextField("Port", text: $serverPort)
+                
+                //                NavigationLink(destination: DeviceListView(serverIp: serverIp, serverPort: serverPort)) {
+                //                    Text("Enter")
+                
+                Button("Enter") {
+                    isNavigating = true
+                }
+                
+            }
+            .navigationDestination(isPresented: $isNavigating) {
+                DeviceListView(serverIp: serverIp, serverPort: serverPort)
+//                    .navigationBarBackButtonHidden(true)
+            }
         }
     }
 }
