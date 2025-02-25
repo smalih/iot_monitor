@@ -33,7 +33,7 @@ struct WelcomeView: View {
             }
             .navigationDestination(isPresented: $isNavigating) {
                 DeviceListView(serverIp: serverIp, serverPort: serverPort)
-//                    .navigationBarBackButtonHidden(true)
+                    .navigationBarBackButtonHidden(true)
             }
         }
     }

@@ -10,7 +10,14 @@ import SwiftUI
 struct DeviceListView: View {
     let serverIp: String
     let serverPort: String
+    
+    @AppStorage("isFIrstLaunch") private var isFirstLaunch = false
+    @AppStorage("serverIp") private var storedServerIp: String = ""
+    @AppStorage("serverPort") private var storedServerPort: String = ""
+    
     @StateObject var viewModel = DeviceListViewModel()
+    
+    @State private var isNavigating = false
     
     var body: some View {
         ZStack (alignment: .leading) {
@@ -37,14 +44,24 @@ struct DeviceListView: View {
                         }
                     }
                 
-//                    HStack {
-//                        Text("Sticky footer")
-//                            .padding()
-//                            .background(.green)
-//                            .foregroundStyle(.blue)
-//                            .cornerRadius(10)
-//                            .frame(maxWidth: .infinity)
-//                    }
+                    HStack {
+                        Button("Exit") {
+                            isNavigating = true
+                            storedServerIp = ""
+                            storedServerPort = ""
+                            isFirstLaunch = false
+                            
+                        }
+                            .padding()
+                            .background(.red)
+                            .foregroundStyle(.white)
+                            .cornerRadius(10)
+                            .frame(maxWidth: .infinity)
+                    }
+                    .navigationDestination(isPresented: $isNavigating) {
+                        WelcomeView()
+                            .navigationBarBackButtonHidden(true)
+                    }
                 }
                 .padding(.horizontal)
             }
