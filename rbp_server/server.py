@@ -2,11 +2,16 @@ import os
 import psycopg2
 import psycopg2.extras
 from dotenv import load_dotenv
+
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
+
 from pydantic import BaseModel
 from enum import Enum
 
-import json
+import uvicorn
 
 from scripts.devices import get_lease_device_info
 
@@ -22,9 +27,15 @@ class DeviceInfo(BaseModel):
     ipAddr: str
     macAddr: str
     
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    scheduler = AsyncIOScheduler()
+    scheduler.add_job(func=update_from_lease_info, trigger="interval", seconds=10)
+    scheduler.start()
+    yield
 
 load_dotenv()
-app = FastAPI()
+app = FastAPI(lifespan=lifespan)
 
 
 def get_db_connection():
@@ -80,22 +91,22 @@ async def get_devices():
     print(devices)
     return devices
 
-# this doesn't make sense - app is simply an interface
-# does not add any devices - all data comes from server
-@app.post("/addDevice/")
-def add_device(device_info: DeviceInfo):
-    conn = get_db_connection()
-    cur = conn.cursor()
-    cur.execute("INSERT INTO devices (mac_addr, ip_addr, name, type)"
-                "VALUES (%s, %s, %s, %s)",
-                (device_info['macAddr'],
-                device_info['ipAddr'],
-                device_info['name'],
-                device_info['type'])
-                )
-    conn.commit()
-    cur.close()
-    conn.close()
+# # this doesn't make sense - app is simply an interface
+# # does not add any devices - all data comes from server
+# @app.post("/addDevice/")
+# def add_device(device_info: DeviceInfo):
+#     conn = get_db_connection()
+#     cur = conn.cursor()
+#     cur.execute("INSERT INTO devices (mac_addr, ip_addr, name, type)"
+#                 "VALUES (%s, %s, %s, %s)",
+#                 (device_info['macAddr'],
+#                 device_info['ipAddr'],
+#                 device_info['name'],
+#                 device_info['type'])
+#                 )
+#     conn.commit()
+#     cur.close()
+#     conn.close()
 
 
 
@@ -138,9 +149,7 @@ def update_device(device_info: DeviceInfo):
         return "An error occurred. Please try again later."
 
 
-
-@app.get("/temp")
-def update_device_names():
+async def update_from_lease_info():
     lease_device_info = get_lease_device_info()
     if lease_device_info is not None:
         conn = get_db_connection()
@@ -174,7 +183,6 @@ def update_device_names():
         conn.commit()
         cur.close()
         conn.close()
-        return "Update successful"
 
 # id SERIAL PRIMARY KEY,"
 #                                     "mac_addr macaddr UNIQUE NOT NULL,"
@@ -182,3 +190,8 @@ def update_device_names():
 #                                     "name varchar (60),"
 #                                     "type varchar (60) DEFAULT 'OTHER',"
 #                                     "status varchar (8) DEFAULT 'SECURE')
+
+
+
+if __name__ == '__main__':
+    uvicorn.run(app, host='0.0.0.0', port=8000)
