@@ -37,20 +37,21 @@ struct Device: Decodable, Identifiable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(Int.self, forKey: .id)
         self.name = try container.decode(String.self, forKey: .name)
-        self.type = .phone
-        self.ipAddress = "192.168.0.1"
-        self.status = .secure
+        self.type = try container.decode(DeviceType.self, forKey: .type)
+        self.ipAddress = try container.decode(String.self, forKey: .ipAddress)
+//        self.macAddress = try container.decode(String.sefl, forKey: .macAddress)
+        self.status = try container.decode(DeviceStatus.self, forKey: .status)
     }
 }
 
 enum DeviceStatus: String, Decodable {
-    case secure = "Secure"
-    case unsecure = "Unsecure"
+    case secure = "SECURE"
+    case unsecure = "UNSECURE"
     
-    enum CodingKeys: String, CodingKey {
-        case secure = "SECURE"
-        case unsecure = "UNSECURE"
-    }
+//    enum CodingKeys: String, CodingKey {
+//        case secure = "SECURE"
+//        case unsecure = "UNSECURE"
+//    }
     
     var color: Color {
         switch self {

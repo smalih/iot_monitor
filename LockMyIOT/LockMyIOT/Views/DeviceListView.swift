@@ -43,7 +43,7 @@ struct DeviceListView: View {
                             .buttonStyle(PlainButtonStyle())
                         }
                     }
-                
+                    
                     HStack {
                         Button("Exit") {
                             isNavigating = true
@@ -52,11 +52,11 @@ struct DeviceListView: View {
                             isFirstLaunch = false
                             
                         }
-                            .padding()
-                            .background(.red)
-                            .foregroundStyle(.white)
-                            .cornerRadius(10)
-                            .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(.red)
+                        .foregroundStyle(.white)
+                        .cornerRadius(10)
+                        .frame(maxWidth: .infinity)
                     }
                     .navigationDestination(isPresented: $isNavigating) {
                         WelcomeView()
@@ -67,9 +67,10 @@ struct DeviceListView: View {
             }
         }
         .onAppear {
-            Task {
-                await viewModel.fetchDevices(serverIp: serverIp, serverPort: serverPort)
-            }
+            viewModel.startFetching(serverIp: serverIp, serverPort: serverPort)
+        }
+        .onDisappear {
+            viewModel.stopFetching()
         }
     }
 }

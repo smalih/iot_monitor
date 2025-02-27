@@ -29,6 +29,7 @@ struct WelcomeView: View {
                     isNavigating = true
                     isFirstLaunch = false
                 }
+//                .disabled(serverIp.isEmpty || serverPort.isEmpty)
                 
             }
             .navigationDestination(isPresented: $isNavigating) {
