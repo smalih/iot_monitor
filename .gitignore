@@ -5,6 +5,7 @@ LockMyIOT/LockMyIOTUITests
 *.db
 .env
 venv/
+*/venv/
 rbp_server/__pycache__/
 */__pycache__/
 
