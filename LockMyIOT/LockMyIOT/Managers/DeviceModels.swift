@@ -1,11 +1,11 @@
 //
-//  DeviceManager.swift
+//  DeviceModels.swift
 //  LockMyIOT
 //
 //  Created by Solomon Malih on 24/12/2024.
 //
 
-import SwiftUI
+import Foundation
 
 struct Device: Decodable, Identifiable {
     let id: Int
@@ -44,38 +44,9 @@ struct Device: Decodable, Identifiable {
     }
 }
 
-enum DeviceStatus: String, Decodable {
-    case secure = "SECURE"
-    case unsecure = "UNSECURE"
-    
-//    enum CodingKeys: String, CodingKey {
-//        case secure = "SECURE"
-//        case unsecure = "UNSECURE"
-//    }
-    
-    var color: Color {
-        switch self {
-        case .secure:
-                .statusGreen
-        case .unsecure:
-                .red
-        }
-    }
-}
 
-enum DeviceType: String, Decodable {
-    case phone = "PHONE"
-    case speaker = "SPEAKER"
-    case other = "OTHER"
-    
-    var icon: String {
-        switch self {
-        case .phone:
-            "iphone"
-        case .speaker:
-            "homepod.mini.badge.plus.fill"
-        case .other:
-            "globe"
-        }
-    }
+
+
+extension Device {
+    static let standard = Device(id: 123, name: "iPhone 12", type: .phone, ipAddress: "192.168.0.1", status: .secure)
 }

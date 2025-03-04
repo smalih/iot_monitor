@@ -35,9 +35,11 @@
 			membershipExceptions = (
 				Assets.xcassets,
 				Components/DeviceListItemView.swift,
+				Enums/DeviceStatus.swift,
+				Enums/DeviceType.swift,
 				Extensions.swift,
 				LockMyIOTApp.swift,
-				Managers/DeviceResponse.swift,
+				Managers/DeviceModels.swift,
 				"Preview Content/deviceData.json",
 				"Preview Content/ModelDeviceData.swift",
 				"Preview Content/Preview Assets.xcassets",
@@ -53,7 +55,9 @@
 		98FAE6BC2D1E16530008FE53 /* Exceptions for "LockMyIOT" folder in "LockMyIOTTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Managers/DeviceResponse.swift,
+				Enums/DeviceStatus.swift,
+				Enums/DeviceType.swift,
+				Managers/DeviceModels.swift,
 				ViewModels/DeviceListViewModel.swift,
 			);
 			target = 98506D2C2D18A07000DAEFB3 /* LockMyIOTTests */;
@@ -63,9 +67,11 @@
 			membershipExceptions = (
 				Assets.xcassets,
 				Components/DeviceListItemView.swift,
+				Enums/DeviceStatus.swift,
+				Enums/DeviceType.swift,
 				Extensions.swift,
 				LockMyIOTApp.swift,
-				Managers/DeviceResponse.swift,
+				Managers/DeviceModels.swift,
 				"Preview Content/deviceData.json",
 				"Preview Content/ModelDeviceData.swift",
 				"Preview Content/Preview Assets.xcassets",
@@ -77,21 +83,11 @@
 			);
 			target = 98506D362D18A07000DAEFB3 /* LockMyIOTUITests */;
 		};
-		98FAE6C42D1E17360008FE53 /* Exceptions for "LockMyIOTTests" folder in "LockMyIOT" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				DeviceFactory.swift,
-			);
-			target = 98506D1C2D18A06E00DAEFB3 /* LockMyIOT */;
-		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		98506D302D18A07000DAEFB3 /* LockMyIOTTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				98FAE6C42D1E17360008FE53 /* Exceptions for "LockMyIOTTests" folder in "LockMyIOT" target */,
-			);
 			path = LockMyIOTTests;
 			sourceTree = "<group>";
 		};
