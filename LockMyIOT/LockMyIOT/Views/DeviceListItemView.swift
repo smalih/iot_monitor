@@ -9,36 +9,29 @@ import SwiftUI
 
 struct DeviceListItemView: View {
     let device: Device
-
+    
     var body: some View {
-        VStack {
-            HStack(spacing: 20) {
-                Image(systemName: device.type.icon)
-                    .font(.title2)
-                    .frame(width: 20, height: 20)
-                    .padding()
-                    .background(Color(hue: 1.0, saturation: 0.0, brightness: 0.888))
-                    .cornerRadius(50)
-
-                VStack(alignment: .leading) {
-                    Text(device.name)
-                        .bold()
-                        .font(.title3)
-                    Text(device.ipAddress)
-                        .bold()
-                        .font(.caption)
-                        .foregroundStyle(.gray)
-                }
-
-                Spacer()
-
-                Text(device.status.rawValue)
-                    .font(.title3)
-                    .bold()
-                    .foregroundColor(device.status.color)
-                Image(systemName: "chevron.forward")
+        HStack(spacing: 20) {
+            Image(systemName: device.type.icon)
+                .font(.title2)
+                .frame(width: 20, height: 20)
+                .padding()
+                .background(Circle().fill(Color.blue.opacity(0.1)))
+                .cornerRadius(50)
+            VStack(alignment: .leading) {
+                Text(device.name)
+                    .font(.headline)
+                Text(device.ipAddress)
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
             }
-            Divider()
+            Spacer()
+            Text(device.status.rawValue)
+                .foregroundColor(device.status.color)
+                .font(.subheadline)
+                .padding(6)
+                .background(device.status.color.opacity(0.2))
+                .cornerRadius(8)
         }
     }
 }

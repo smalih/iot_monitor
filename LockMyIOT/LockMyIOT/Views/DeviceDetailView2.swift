@@ -1,13 +1,6 @@
-//
-//  DeviceDetailView.swift
-//  LockMyIOT
-//
-//  Created by Solomon Malih on 24/12/2024.
-//
-
 import SwiftUI
 
-struct DeviceDetailView: View {
+struct DeviceDetailView2: View {
     let device: Device
     
     var body: some View {
@@ -57,11 +50,16 @@ struct DeviceDetailView: View {
             
             Spacer()
         }
+        .navigationTitle(device.name)
+        .navigationBarTitleDisplayMode(.inline)
+        .background(Color(UIColor.systemGroupedBackground))  // Background color to match standard iOS views
     }
 }
 
-#Preview {
-    NavigationStack {
-        DeviceDetailView(device: .standard)
+struct DeviceDetailView2_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationStack {
+            DeviceDetailView2(device: Device.mockDevices[0])
+        }
     }
 }
