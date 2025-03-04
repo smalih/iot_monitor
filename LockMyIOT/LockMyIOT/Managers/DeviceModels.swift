@@ -12,7 +12,7 @@ struct Device: Decodable, Identifiable {
     let name: String
     let type: DeviceType
     let ipAddress: String
-//    let macAddress: String
+    let macAddress: String
     let status: DeviceStatus
     
     enum CodingKeys: String, CodingKey {
@@ -20,16 +20,16 @@ struct Device: Decodable, Identifiable {
         case name
         case type
         case ipAddress = "ip_addr"
-//        case macAddress = "mac_addr"
+        case macAddress = "mac_addr"
         case status
-    
     }
     
-    init(id: Int, name: String, type: DeviceType, ipAddress: String, status: DeviceStatus) {
+    init(id: Int, name: String, type: DeviceType, ipAddress: String, macAddress: String, status: DeviceStatus) {
         self.id = id
         self.name = name
         self.type = type
         self.ipAddress = ipAddress
+        self.macAddress = macAddress
         self.status = status
     }
     
@@ -39,7 +39,7 @@ struct Device: Decodable, Identifiable {
         self.name = try container.decode(String.self, forKey: .name)
         self.type = try container.decode(DeviceType.self, forKey: .type)
         self.ipAddress = try container.decode(String.self, forKey: .ipAddress)
-//        self.macAddress = try container.decode(String.sefl, forKey: .macAddress)
+        self.macAddress = try container.decode(String.self, forKey: .macAddress)
         self.status = try container.decode(DeviceStatus.self, forKey: .status)
     }
 }
