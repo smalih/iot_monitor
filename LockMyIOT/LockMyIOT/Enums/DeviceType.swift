@@ -11,7 +11,7 @@ enum DeviceType: String, Decodable {
     case phone = "PHONE"
     case speaker = "SPEAKER"
     case other = "OTHER"
-    
+
     var icon: String {
         switch self {
         case .phone:

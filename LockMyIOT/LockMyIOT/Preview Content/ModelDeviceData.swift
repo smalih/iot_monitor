@@ -7,9 +7,9 @@
 
 import Foundation
 
-//var mockDevice: Device = load(from: "deviceData.json")
+// var mockDevice: Device = load(from: "deviceData.json")
 //
-//func load<T: Decodable>(from filename: String) -> T {
+// func load<T: Decodable>(from filename: String) -> T {
 //    let data: Data
 //    
 //    guard let file = Bundle.main.url(forResource: filename, withExtension: nil)
@@ -29,4 +29,4 @@ import Foundation
 //    } catch {
 //        fatalError("Couldn't parse \(filename)")
 //    }
-//}
+// }

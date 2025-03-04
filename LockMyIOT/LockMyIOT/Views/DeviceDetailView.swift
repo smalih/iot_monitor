@@ -9,27 +9,37 @@ import SwiftUI
 
 struct DeviceDetailView: View {
     let device: Device
-    
+
     var body: some View {
         VStack(alignment: .leading) {
-            
             VStack(alignment: .leading, spacing: 20) {
                 Text("IP Address: ").bold() + Text(device.ipAddress)
-                Text("Latest Connection: ").bold() + Text("www.google.com")
-                Text("Most Common Connection ").bold() + Text("www.apple.com")
+                Text("Mac Address: \(device.macAddress)")
+                HStack(spacing: 0) {
+                    Text("Status: ")
+                    Text(device.status.rawValue)
+                        .bold()
+                        .foregroundColor(device.status.color)
+                }
+
             }
             .padding()
             Spacer()
-                Button("DISCONNECT") { }
-                    .buttonStyle(.borderedProminent)
-                    .background(Color.white)
-                    .tint(.red)
-                    .frame(maxWidth: .infinity)
+            Button("DISCONNECT") {
+
+            }
+            .buttonStyle(.borderedProminent)
+            .background(Color.white)
+            .tint(.red)
+            .frame(maxWidth: .infinity)
         }
         .navigationTitle(device.name)
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
 #Preview {
-    DeviceDetailView(device: .standard)
+    NavigationStack {
+        DeviceDetailView(device: .standard)
+    }
 }

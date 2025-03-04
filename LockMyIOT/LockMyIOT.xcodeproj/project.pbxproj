@@ -34,18 +34,17 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Assets.xcassets,
-				Components/DeviceListItemView.swift,
 				Enums/DeviceStatus.swift,
 				Enums/DeviceType.swift,
-				Extensions.swift,
 				LockMyIOTApp.swift,
-				Managers/DeviceModels.swift,
-				"Preview Content/deviceData.json",
+				Managers/DeviceManager.swift,
+				Models/Device.swift,
 				"Preview Content/ModelDeviceData.swift",
 				"Preview Content/Preview Assets.xcassets",
 				ViewModels/DeviceListViewModel.swift,
 				Views/ContentView.swift,
 				Views/DeviceDetailView.swift,
+				Views/DeviceListItemView.swift,
 				Views/DeviceListView.swift,
 				Views/LoadingView.swift,
 				Views/WelcomeView.swift,
@@ -57,7 +56,8 @@
 			membershipExceptions = (
 				Enums/DeviceStatus.swift,
 				Enums/DeviceType.swift,
-				Managers/DeviceModels.swift,
+				Managers/DeviceManager.swift,
+				Models/Device.swift,
 				ViewModels/DeviceListViewModel.swift,
 			);
 			target = 98506D2C2D18A07000DAEFB3 /* LockMyIOTTests */;
@@ -66,17 +66,16 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Assets.xcassets,
-				Components/DeviceListItemView.swift,
 				Enums/DeviceStatus.swift,
 				Enums/DeviceType.swift,
-				Extensions.swift,
 				LockMyIOTApp.swift,
-				Managers/DeviceModels.swift,
-				"Preview Content/deviceData.json",
+				Managers/DeviceManager.swift,
+				Models/Device.swift,
 				"Preview Content/ModelDeviceData.swift",
 				"Preview Content/Preview Assets.xcassets",
 				Views/ContentView.swift,
 				Views/DeviceDetailView.swift,
+				Views/DeviceListItemView.swift,
 				Views/DeviceListView.swift,
 				Views/LoadingView.swift,
 				Views/WelcomeView.swift,
@@ -452,10 +451,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = LockMyIOT/LockMyIOT.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LockMyIOT/Preview Content\"";
-				DEVELOPMENT_TEAM = D7R4RA8Y33;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -482,10 +482,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = LockMyIOT/LockMyIOT.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LockMyIOT/Preview Content\"";
-				DEVELOPMENT_TEAM = D7R4RA8Y33;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
