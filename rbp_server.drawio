@@ -14,7 +14,7 @@
           <mxGeometry x="220" y="200" width="260" height="210" as="geometry" />
         </mxCell>
         <mxCell id="Ll40XAD7Y4JH39oqomdF-4" value="" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="245" y="220" width="140" height="180" as="geometry" />
+          <mxGeometry x="245" y="220" width="165" height="180" as="geometry" />
         </mxCell>
         <mxCell id="Ll40XAD7Y4JH39oqomdF-5" value="Intrusion Detection&amp;nbsp;&lt;div&gt;System&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
           <mxGeometry x="240" y="230" width="130" height="40" as="geometry" />
@@ -137,6 +137,9 @@
         </mxCell>
         <mxCell id="Ll40XAD7Y4JH39oqomdF-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.127;entryY=0.625;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="Ll40XAD7Y4JH39oqomdF-19" target="Ll40XAD7Y4JH39oqomdF-34">
           <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Ll40XAD7Y4JH39oqomdF-37" value="Classification" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="324.00000000000006" y="260" width="90" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
