@@ -144,7 +144,6 @@ def update_device(device_info: DeviceInfo):
         conn.commit()
         cur.close()
         conn.close()
-        return "Update successful"
     except Exception:
         return "An error occurred. Please try again later."
 
