@@ -21,11 +21,9 @@ struct DeviceListItemView: View {
                     .cornerRadius(50)
 
                 VStack(alignment: .leading) {
-
                     Text(device.name)
                         .bold()
                         .font(.title3)
-
                     Text(device.ipAddress)
                         .bold()
                         .font(.caption)
@@ -43,7 +41,6 @@ struct DeviceListItemView: View {
             Divider()
         }
     }
-
 }
 
 #Preview {
