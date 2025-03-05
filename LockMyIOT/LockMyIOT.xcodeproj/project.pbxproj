@@ -36,6 +36,7 @@
 				Assets.xcassets,
 				Enums/DeviceStatus.swift,
 				Enums/DeviceType.swift,
+				"Extensions/View+Background.swift",
 				LockMyIOTApp.swift,
 				Managers/DeviceManager.swift,
 				Models/Device.swift,
@@ -44,9 +45,9 @@
 				ViewModels/DeviceListViewModel.swift,
 				Views/ContentView.swift,
 				Views/DeviceDetailView.swift,
-				Views/DeviceDetailView2.swift,
 				Views/DeviceListItemView.swift,
 				Views/DeviceListView.swift,
+				Views/EmptyDeviceListView.swift,
 				Views/LoadingView.swift,
 				Views/WelcomeView.swift,
 			);
@@ -69,6 +70,7 @@
 				Assets.xcassets,
 				Enums/DeviceStatus.swift,
 				Enums/DeviceType.swift,
+				"Extensions/View+Background.swift",
 				Info.plist,
 				LockMyIOTApp.swift,
 				Managers/DeviceManager.swift,
@@ -77,9 +79,9 @@
 				"Preview Content/Preview Assets.xcassets",
 				Views/ContentView.swift,
 				Views/DeviceDetailView.swift,
-				Views/DeviceDetailView2.swift,
 				Views/DeviceListItemView.swift,
 				Views/DeviceListView.swift,
+				Views/EmptyDeviceListView.swift,
 				Views/LoadingView.swift,
 				Views/WelcomeView.swift,
 			);
@@ -458,7 +460,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LockMyIOT/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = B843M46GHC;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LockMyIOT/Info.plist;
@@ -490,7 +492,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LockMyIOT/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = B843M46GHC;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LockMyIOT/Info.plist;

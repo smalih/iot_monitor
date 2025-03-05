@@ -9,22 +9,44 @@ import SwiftUI
 
 struct DeviceListView: View {
     @StateObject var viewModel: DeviceListViewModel
-    @AppStorage("isFIrstLaunch") private var isFirstLaunch = false
-    @AppStorage("serverIp") private var storedServerIp: String = ""
-    @AppStorage("serverPort") private var storedServerPort: String = ""
-
-    @State private var isNavigating = false
 
     var body: some View {
         NavigationStack {
-            List(viewModel.devices) { device in
-                NavigationLink {
-                    DeviceDetailView(device: device)
-                } label: {
-                    DeviceListItemView(device: device)
+            // Check if devices are available
+            VStack {
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text("IP: \(viewModel.serverIp)")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                    }
+                    
+                    Spacer()
+                    
+                    VStack(alignment: .leading) {
+                        Text("Port: \(viewModel.serverPort)")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                    }
+                }
+                .padding(.horizontal)
+
+                if viewModel.devices.isEmpty {
+                    EmptyDeviceListView()
+                } else {
+                    List(viewModel.devices) { device in
+                        NavigationLink {
+                            DeviceDetailView(device: device)
+                        } label: {
+                            DeviceListItemView(device: device)
+                        }
+                    }
                 }
             }
+            
         }
+        .navigationTitle("Device List")
+        .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             viewModel.startFetching()
         }
@@ -41,5 +63,7 @@ struct DeviceListView: View {
         serverPort: "8000",
         deviceManager: MockDeviceManager()
     )
-    return DeviceListView(viewModel: viewModel)
+    return NavigationStack {
+        DeviceListView(viewModel: viewModel)
+    }
 }
