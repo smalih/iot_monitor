@@ -2,14 +2,12 @@ import os
 import pandas as pd
 import numpy as np
 
-from sklearn.preprocessing import LabelEncoder, MinMaxScaler
 import joblib
 
 import tensorflow as tf
 import tensorflow.keras as keras
 # Change display.max_rows to show all features.
 pd.set_option("display.max_rows", 85)
-
 
 
 MODEL_DIR_PATH = "/Users/smalih/CICIDS_models/my_model"
@@ -24,10 +22,8 @@ scaler = joblib.load(os.path.join(UTILS_PATH, 'x_scaler.pkl'))
 
 with open('/home/smalih/iot_monitor/rbp_server/cicflowmeter/fields.txt', 'r') as fields_file:
     fields = fields_file.read().splitlines()
-    print(fields)
-# fields = fields[2:]
-n = 0
 
+n = 0
 
 def reshape_dataset_cnn(x: np.ndarray) -> np.ndarray:
     # Add padding columns
@@ -39,19 +35,6 @@ def reshape_dataset_cnn(x: np.ndarray) -> np.ndarray:
     result = result[..., tf.newaxis]
     return result
 
-# def load_data(data_path):
-#     df = pd.read_csv(data_path)
-#     # Split features and labels
-#     scaler = MinMaxScaler()
-#     x = scaler.fit_transform(df)
-#     return reshape_dataset_cnn(x)
-
-
-def classify_data(data):
-    print("classifying data")
-    classification = model(data, training=False)
-    return classification
-
 def get_predictions(data):
     y_pred = model.predict(data, batch_size=1024, verbose=False)
     y_pred = label_encoder[np.argmax(y_pred, axis=1)]
@@ -59,15 +42,13 @@ def get_predictions(data):
 
 def classify_data(log_path):
     global n
-    # print(f"skiprows: {skiprows}")
-    # new_data = pd.read_csv(log_path, skiprows=skiprows, header=None)
-    new_data = pd.read_csv(log_path, usecols=fields, skiprows=[i for i in range(1, n+1)])
-    # print(new_data.iloc[0])
-    # print("HI")
-   
+    try:
+        new_data = pd.read_csv(log_path, usecols=fields, skiprows=[i for i in range(1, n)])
+    except pd.errors.EmptyDataError:
+        return
+
     if not new_data.empty:
         print(f"new_data: ")
-        # print(new_data.head())
         print(new_data)
         x = scaler.fit_transform(new_data.iloc[:,2:])
         x = reshape_dataset_cnn(x)
@@ -78,5 +59,5 @@ def classify_data(log_path):
         attack_data = attack_data[['src_ip', 'dst_ip']]
         attack_data['LABEL'] = attack_indices
 
-
-        return attack_data
+        if not attack_data.empty:
+            return attack_data

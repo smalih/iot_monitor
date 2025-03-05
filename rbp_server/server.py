@@ -4,6 +4,7 @@ import psycopg2.extras
 from dotenv import load_dotenv
 
 import time
+from datetime import datetime
 
 import pandas as pd
 import numpy as np
@@ -106,41 +107,6 @@ async def get_devices():
     print(devices)
     return devices
 
-# # this doesn't make sense - app is simply an interface
-# # does not add any devices - all data comes from server
-# @app.post("/addDevice/")
-# def add_device(device_info: DeviceInfo):
-#     conn = get_db_connection()
-#     cur = conn.cursor()
-#     cur.execute("INSERT INTO devices (mac_addr, ip_addr, name, type)"
-#                 "VALUES (%s, %s, %s, %s)",
-#                 (device_info['macAddr'],
-#                 device_info['ipAddr'],
-#                 device_info['name'],
-#                 device_info['type'])
-#                 )
-#     conn.commit()
-#     cur.close()
-#     conn.close()
-
-
-
-# @app.route("/mockInsert")
-# def insert_mock_device():
-#     conn = get_db_connection()
-#     cur = conn.cursor()
-#     cur.execute("INSERT INTO devices (mac_addr, ip_addr, name, type, status)"
-#             "VALUES (%s, %s, %s, %s, %s)",
-#             ("01:24:45:67:89:AB",
-#              "192.168.0.5",
-#              "Test Phone 8",
-#              "Phone",
-#              "DEFAULT")
-#             )
-#     conn.commit()
-#     cur.close()
-#     conn.close()
-#     return redirect(url_for("get_devices"))
 
 @app.put("/update")
 def update_device(device_info: DeviceInfo):
@@ -199,33 +165,28 @@ async def update_from_lease_info():
         conn.close()
 
 
+def alert_attack(classification, attack_datetime):
+    classification['dst_ip'].startswith("10.")
+    classification['datetime'] = attack_datetime
+
+    return classification.to_json(date_unit='s')
+
+
+
 def read_logs(log_file_name):
     print(f"Monitoring {log_file_name} for updates")
     log_path = os.path.join("/home/smalih/iot_monitor/rbp_server/cicflowmeter", log_file_name)
-    log_path = os.path.join("/home/smalih/iot_monitor/rbp_server/cicflowmeter", "rbp_py.csv")
     print(f"read_logs file path: {log_path}")
     while not os.path.exists(log_path):
-        time.sleep(60) # initial wait whilst cicflowmeter tool loads up
-    # log_path = os.path.join("/home/smalih/iot_monitor/rbp_server/cicflowmeter", "rbp_py.csv")
-
-    # df = pd.DataFrame(columns=fields)
-    # with open(log_path, "r+") as log_file:
-        # log_file.seek(0, 2)
-
-        # new_data = pd.read_csv()
-        # while True:
-        #     log_file.readline()
-        #     line  = log_file.readline().strip().split(',')
-        #     if not line:
-        #         time.sleep(5)
-        #         continue
-        #     print(f"line returned by cicflowmeter: \n{line}")
-        #     classification = classify_data(line)
-        #     print(f"classification: {classification}" )
+        time.sleep(10) # initial wait whilst cicflowmeter tool loads up
     while True:
-        classification = classify_data(log_path)
-        if classification is not None:
-            print(f"Classifications: {classification}")
+        classifications = classify_data(log_path)
+        if classifications is not None:
+            attack_datetime = datetime.now()
+            for classification in classifications:
+                alert_attack(classification, attack_datetime)
+
+
         time.sleep(10)
 
 
@@ -263,8 +224,7 @@ class CLIToolRunner:
         print(f"Started {self.name} in background")
 
     def run_cli(self, log_file_name):
-        print(f"cli tool log file_name: {log_file_name}")
-        self.process = subprocess.Popen(f'cd /home/smalih/iot_monitor/rbp_server/cicflowmeter && poetry run cicflowmeter -i wlan0 -c {log_file_name}', shell=True)
+        self.process = subprocess.Popen(f'{self.cli_command} {log_file_name}', shell=True)
 
     def stop(self):
         self.running = False
@@ -276,9 +236,6 @@ class CLIToolRunner:
 
 if __name__ == '__main__':
     log_file_name = f"{time.strftime('%Y%m%d-%H%M')}.csv"
-    # t1 = threading.Thread(target=run_cicflowmeter, args=(log_path,))
-    # t2 = threading.Thread(target=read_logs, args=(log_path,))
-    print(f"filename: {log_file_name}")
     t1 = CLIToolRunner('cicflowmeter_runner', 'cd /home/smalih/iot_monitor/rbp_server/cicflowmeter && poetry run cicflowmeter -i wlan0 -c ', (log_file_name, ))
     t2 = ThreadTaskRunner('read_logs_func', read_logs, (log_file_name, ))
 
