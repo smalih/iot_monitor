@@ -48,8 +48,6 @@ def classify_data(log_path):
         return
 
     if not new_data.empty:
-        print(f"new_data: ")
-        print(new_data)
         x = scaler.fit_transform(new_data.iloc[:,2:])
         x = reshape_dataset_cnn(x)
         n += len(new_data)

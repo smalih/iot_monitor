@@ -107,7 +107,6 @@ async def get_devices():
     print(devices)
     return devices
 
-
 @app.put("/update")
 def update_device(device_info: DeviceInfo):
     try:
@@ -128,6 +127,25 @@ def update_device(device_info: DeviceInfo):
     except Exception:
         return "An error occurred. Please try again later."
 
+@app.put("/update")
+def update_device(device_info: DeviceInfo):
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute("UPDATE devices "
+                    "SET name = %s,"
+                    "type = %s "
+                    "WHERE id = %s;",
+                    (device_info['name'],
+                    device_info['type'],
+                    device_info['id'])
+                    )
+        
+        conn.commit()
+        cur.close()
+        conn.close()
+    except Exception:
+        return "An error occurred. Please try again later."
 
 async def update_from_lease_info():
     lease_device_info = get_lease_device_info()
@@ -166,10 +184,12 @@ async def update_from_lease_info():
 
 
 def alert_attack(classification, attack_datetime):
-    classification['dst_ip'].startswith("10.")
-    classification['datetime'] = attack_datetime
+    classification[1]['datetime'] = attack_datetime
 
-    return classification.to_json(date_unit='s')
+    print(f"under attack: {classification[1]}")
+
+
+    return classification[1].to_json(date_unit='s')
 
 
 
@@ -182,9 +202,14 @@ def read_logs(log_file_name):
     while True:
         classifications = classify_data(log_path)
         if classifications is not None:
-            attack_datetime = datetime.now()
-            for classification in classifications:
-                alert_attack(classification, attack_datetime)
+            
+            for classification in classifications.iterrows():
+                print(type(classification))
+                if classification[1]['dst_ip'].startswith("10."):
+                    attack_datetime = datetime.now()
+                    alert_attack(classification, attack_datetime)
+                else:
+                    print(classification[1])
 
 
         time.sleep(10)
