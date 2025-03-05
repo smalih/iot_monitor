@@ -20,12 +20,13 @@ struct WelcomeView: View {
     var body: some View {
         NavigationStack {
             VStack {
+                Spacer()
                 // Logo at the top
                 Image("Logo") // Replace "your_logo_name" with the actual name of your logo image in your asset catalog
                     .resizable()
                     .scaledToFit()
                     .frame(width: logoHeight, height: logoHeight) // Adjust the size to fit your needs
-                    .padding(.top, 100) // Add top padding if you want more space between logo and the fields
+//                    .padding(.top, 100)  Add top padding if you want more space between logo and the fields
                 Text("Add IP Address and Port Number to connect to the server")
                     .font(.title3) // Increased font size
                     .multilineTextAlignment(.center)
@@ -33,7 +34,7 @@ struct WelcomeView: View {
                     .padding(.top, 20)
                     .padding([.bottom, .horizontal])
                 Spacer()
-                VStack(spacing: 20) {
+                VStack(spacing: 30) {
                     textfield(title: "IP Address", placeholder: "Enter IP address", text: $serverIp, keyboardType: .decimalPad)
                     textfield(title: "Port Number", placeholder: "Enter Port", text: $serverPort, keyboardType: .numberPad)
                     Spacer()
@@ -60,7 +61,7 @@ struct WelcomeView: View {
                 .padding()
             }
             .background(Color(UIColor.systemBackground)) // Set the background color of the whole view
-            .edgesIgnoringSafeArea(.all) // Ensure background color stretches fully
+//            .edgesIgnoringSafeArea(.all)  Ensure background color stretches fully
             .navigationBarBackButtonHidden(true) // Hide the back button when navigating
             .toolbar {
                 ToolbarItemGroup(placement: .keyboard) {
@@ -80,15 +81,18 @@ struct WelcomeView: View {
     func textfield(title: String, placeholder: String, text: Binding<String>, keyboardType: UIKeyboardType) -> some View {
         VStack(alignment: .leading) {
             Text(title)
-                .font(.subheadline)
+                .font(.body)
                 .foregroundColor(.gray)
             
             TextField(placeholder, text: text)
                 .keyboardType(keyboardType)
-                .textFieldStyle(RoundedBorderTextFieldStyle()) // Rounded border style
-                .background(Color.white)
-                .padding(2)
-                .cornerRadius(8)
+                .padding(10) // Increase the padding to add more space inside the TextField
+//                .background(Color.white)
+                .cornerRadius(12) // Adjust the corner radius to match your design
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12) // Match the corner radius
+                        .stroke(Color.gray, lineWidth: 2) // Set the color and thickness of the border
+                )
         }
     }
 }
