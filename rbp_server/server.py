@@ -3,6 +3,15 @@ import psycopg2
 import psycopg2.extras
 from dotenv import load_dotenv
 
+import time
+
+import pandas as pd
+import numpy as np
+
+import threading 
+
+import subprocess
+
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from contextlib import asynccontextmanager
 
@@ -14,6 +23,12 @@ from enum import Enum
 import uvicorn
 
 from scripts.devices import get_lease_device_info
+from scripts.ids import classify_data
+# from scripts.analyse import run_cicflowmeter
+
+
+
+
 
 class DeviceType(Enum):
     PHONE = "PHONE"
@@ -183,14 +198,93 @@ async def update_from_lease_info():
         cur.close()
         conn.close()
 
-# id SERIAL PRIMARY KEY,"
-#                                     "mac_addr macaddr UNIQUE NOT NULL,"
-#                                     "ip_addr inet UNIQUE NOT NULL,"
-#                                     "name varchar (60),"
-#                                     "type varchar (60) DEFAULT 'OTHER',"
-#                                     "status varchar (8) DEFAULT 'SECURE')
 
+def read_logs(log_file_name):
+    print(f"Monitoring {log_file_name} for updates")
+    log_path = os.path.join("/home/smalih/iot_monitor/rbp_server/cicflowmeter", log_file_name)
+    log_path = os.path.join("/home/smalih/iot_monitor/rbp_server/cicflowmeter", "rbp_py.csv")
+    print(f"read_logs file path: {log_path}")
+    while not os.path.exists(log_path):
+        time.sleep(60) # initial wait whilst cicflowmeter tool loads up
+    # log_path = os.path.join("/home/smalih/iot_monitor/rbp_server/cicflowmeter", "rbp_py.csv")
+
+    # df = pd.DataFrame(columns=fields)
+    # with open(log_path, "r+") as log_file:
+        # log_file.seek(0, 2)
+
+        # new_data = pd.read_csv()
+        # while True:
+        #     log_file.readline()
+        #     line  = log_file.readline().strip().split(',')
+        #     if not line:
+        #         time.sleep(5)
+        #         continue
+        #     print(f"line returned by cicflowmeter: \n{line}")
+        #     classification = classify_data(line)
+        #     print(f"classification: {classification}" )
+    while True:
+        classification = classify_data(log_path)
+        if classification is not None:
+            print(f"Classifications: {classification}")
+        time.sleep(10)
+
+
+class ThreadTaskRunner:
+    def __init__(self, name, target, command_args=None):
+        self.name = name
+        self.target = target
+        self.process = None
+        self.thread = None
+        self.running = True
+        self.command_args = command_args
+
+    def start(self):
+        self.thread = threading.Thread(target=self.target, args=self.command_args)
+        self.thread.start()
+        print(f"Started {self.name} in background")
+
+
+    def stop(self):
+        self.running = False
+        print(f"{self.name} stopped successfully")
+
+class CLIToolRunner:
+    def __init__(self, name, cli_command, command_args=None):
+        self.name = name
+        self.cli_command = cli_command
+        self.process = None
+        self.thread = None
+        self.running = True
+        self.command_args = command_args
+
+    def start(self):
+        self.thread = threading.Thread(target=self.run_cli, args=self.command_args)
+        self.thread.start()
+        print(f"Started {self.name} in background")
+
+    def run_cli(self, log_file_name):
+        print(f"cli tool log file_name: {log_file_name}")
+        self.process = subprocess.Popen(f'cd /home/smalih/iot_monitor/rbp_server/cicflowmeter && poetry run cicflowmeter -i wlan0 -c {log_file_name}', shell=True)
+
+    def stop(self):
+        self.running = False
+        if self.process:
+            self.process.terminate()
+            self.process.wait()
+            print(f"{self.name} stopped successfully")
 
 
 if __name__ == '__main__':
+    log_file_name = f"{time.strftime('%Y%m%d-%H%M')}.csv"
+    # t1 = threading.Thread(target=run_cicflowmeter, args=(log_path,))
+    # t2 = threading.Thread(target=read_logs, args=(log_path,))
+    print(f"filename: {log_file_name}")
+    t1 = CLIToolRunner('cicflowmeter_runner', 'cd /home/smalih/iot_monitor/rbp_server/cicflowmeter && poetry run cicflowmeter -i wlan0 -c ', (log_file_name, ))
+    t2 = ThreadTaskRunner('read_logs_func', read_logs, (log_file_name, ))
+
+    t1.start()
+    time.sleep(1)
+    t2.start()
     uvicorn.run(app, host='0.0.0.0', port=8000)
+    t1.stop()
+    t2.stop()
