@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36" version="26.2.9">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
-    <mxGraphModel dx="1046" dy="674" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1090" dy="702" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
@@ -25,7 +25,7 @@
           <mxGeometry x="480" y="190" width="120" height="40" as="geometry" />
         </mxCell>
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-8" value="No" style="rounded=0;html=1;jettySize=auto;orthogonalLoop=1;fontSize=11;endArrow=block;endFill=1;endSize=8;strokeWidth=1;shadow=0;labelBackgroundColor=none;edgeStyle=orthogonalEdgeStyle;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="WIyWlLk6GJQsqaUBKTNV-10" edge="1">
-          <mxGeometry x="-0.3956" y="17" relative="1" as="geometry">
+          <mxGeometry x="-0.7895" y="-10" relative="1" as="geometry">
             <mxPoint as="offset" />
             <mxPoint x="260" y="520" as="targetPoint" />
             <Array as="points">
@@ -35,6 +35,11 @@
         </mxCell>
         <mxCell id="rFmF9AMu-aASJVvAo8EJ-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=block;endFill=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="WIyWlLk6GJQsqaUBKTNV-10" target="rFmF9AMu-aASJVvAo8EJ-6">
           <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rFmF9AMu-aASJVvAo8EJ-23" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="rFmF9AMu-aASJVvAo8EJ-7">
+          <mxGeometry x="-0.4729" y="1" relative="1" as="geometry">
+            <mxPoint y="-9" as="offset" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-10" value="Newly connected device?" style="rhombus;whiteSpace=wrap;html=1;shadow=0;fontFamily=Helvetica;fontSize=12;align=center;strokeWidth=1;spacing=6;spacingTop=-4;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="310" y="340" width="100" height="80" as="geometry" />
@@ -60,9 +65,6 @@
         <mxCell id="rFmF9AMu-aASJVvAo8EJ-6" value="Store device name in &lt;font face=&quot;Courier New&quot;&gt;devices&lt;/font&gt;&lt;i&gt;&amp;nbsp;&lt;/i&gt;table" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
           <mxGeometry x="430" y="430" width="120" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="rFmF9AMu-aASJVvAo8EJ-11" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;Yes&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="430" y="378" width="40" height="30" as="geometry" />
-        </mxCell>
         <mxCell id="rFmF9AMu-aASJVvAo8EJ-15" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;Yes&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
           <mxGeometry x="250" y="180" width="40" height="30" as="geometry" />
         </mxCell>
@@ -77,7 +79,7 @@
             <mxPoint x="490" y="520" as="sourcePoint" />
             <mxPoint x="130" y="120" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="70" y="140" />
+              <mxPoint x="90" y="310" />
             </Array>
           </mxGeometry>
         </mxCell>
