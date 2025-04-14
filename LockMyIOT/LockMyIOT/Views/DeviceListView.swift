@@ -8,66 +8,85 @@
 import SwiftUI
 
 struct DeviceListView: View {
-    let serverIp: String
-    let serverPort: String
-    
     @AppStorage("isFIrstLaunch") private var isFirstLaunch = false
     @AppStorage("serverIp") private var storedServerIp: String = ""
     @AppStorage("serverPort") private var storedServerPort: String = ""
     
-    @StateObject var viewModel = DeviceListViewModel()
+    @Environment(\.dismiss) var dismiss // Used to go back to the previous screen
     
-    @State private var isNavigating = false
+    @StateObject var viewModel: DeviceListViewModel
     
+    @State private var isNavigating: Bool = false;
     var body: some View {
-        ZStack (alignment: .leading) {
-            
-            NavigationStack {
-                VStack(alignment: .trailing) {
-                    HStack {
-                        
-                        Text("My Devices - \(serverIp)")
-                            .bold().font(.title)
-                        Spacer()
-                        Image(systemName: "bell.badge.fill")
-                            .font(.title)
+        NavigationStack {
+            // Check if devices are available
+            VStack {
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text("IP: \(viewModel.serverIp)")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
                     }
                     
-                    ScrollView(showsIndicators: false) {
-                        ForEach(viewModel.devices) { device in
+                    Spacer()
+                    
+                    VStack(alignment: .leading) {
+                        Text("Port: \(viewModel.serverPort)")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                    }
+                }
+                .padding(.horizontal)
+                
+                if viewModel.devices.isEmpty {
+                    EmptyDeviceListView()
+                } else {
+                    VStack{
+                        List(viewModel.devices) { device in
                             NavigationLink {
                                 DeviceDetailView(device: device)
                             } label: {
                                 DeviceListItemView(device: device)
                             }
-                            .buttonStyle(PlainButtonStyle())
                         }
-                    }
-                    
-                    HStack {
-                        Button("Exit") {
-                            isNavigating = true
-                            storedServerIp = ""
-                            storedServerPort = ""
-                            isFirstLaunch = false
+                        .scrollContentBackground(.hidden)
+                        .background(Color(UIColor.systemGroupedBackground))
+                        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                        
+                        HStack {
+                            Button(action: {
+                                dismiss() // Go back to the previous screen
+                            }) {
+                                Text("Disconnect")
+                                    .font(.headline)
+                                    .foregroundColor(.white)
+                                    .padding()
+                                    .background(Color.blue)
+                                    .cornerRadius(10)
+                            }
                             
                         }
                         .padding()
-                        .background(.red)
-                        .foregroundStyle(.white)
-                        .cornerRadius(10)
                         .frame(maxWidth: .infinity)
+                        .background(Color(UIColor.systemGroupedBackground))
+                        .edgesIgnoringSafeArea(.all)
+                        .navigationDestination(isPresented: $isNavigating) {
+                            WelcomeView()
+                                .navigationBarBackButtonHidden(true)
+                        }
                     }
-                    .navigationDestination(isPresented: $isNavigating) {
-                        WelcomeView()
-                            .navigationBarBackButtonHidden(true)
-                    }
+                    .background(Color(UIColor.systemGroupedBackground))
+                    
                 }
-                .padding(.horizontal)
+                
             }
+            .edgesIgnoringSafeArea(.bottom)
+            
         }
+        .navigationTitle("Device List")
+        .navigationBarTitleDisplayMode(.inline)
         .onAppear {
-            viewModel.startFetching(serverIp: serverIp, serverPort: serverPort)
+            viewModel.startFetching()
         }
         .onDisappear {
             viewModel.stopFetching()
@@ -76,5 +95,13 @@ struct DeviceListView: View {
 }
 
 #Preview("Devices View") {
-    DeviceListView(serverIp: "192.168.1.30", serverPort: "8000")
+    let viewModel = DeviceListViewModel(
+        devices: Device.mockDevices,
+        serverIp: "192.168.1.30",
+        serverPort: "8000",
+        deviceManager: MockDeviceManager()
+    )
+    return NavigationStack {
+        DeviceListView(viewModel: viewModel)
+    }
 }

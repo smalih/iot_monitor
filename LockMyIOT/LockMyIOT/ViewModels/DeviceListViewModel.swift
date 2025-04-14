@@ -7,60 +7,56 @@
 
 import Foundation
 
-final class DeviceListViewModel: ObservableObject { 
-    @Published var devices: [Device] = []
+final class DeviceListViewModel: ObservableObject {
+    @Published var devices: [Device]
+    let serverIp: String
+    let serverPort: String
     private var timer: Timer?
-    
-    func startFetching(serverIp: String, serverPort: String) {
+    private let timeInterval: TimeInterval
+    private let deviceManager: DeviceManagerProtocol
+
+    init(
+        devices: [Device] = [],
+        serverIp: String,
+        serverPort: String,
+        deviceManager: DeviceManagerProtocol = DeviceManager(),
+        timer: Timer? = nil,
+        timeInterval: TimeInterval = 10
+    ) {
+        self.devices = devices
+        self.serverIp = serverIp
+        self.serverPort = serverPort
+        self.timer = timer
+        self.timeInterval = timeInterval
+        self.deviceManager = deviceManager
+    }
+
+    deinit {
         stopFetching()
-        
-        Task {
-            await fetchDevices(serverIp: serverIp, serverPort: serverPort)
+    }
+
+    func startFetching() {
+        stopFetching()
+
+        Task { [weak self] in
+            guard let self else { return }
+            if let updatedDevices = await deviceManager.fetchDevices(serverIp: serverIp, serverPort: serverPort) {
+                devices = updatedDevices
+            }
         }
-        
-        timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { [weak self] _ in
-            Task {
-                await self?.fetchDevices(serverIp: serverIp, serverPort: serverPort)
+
+        timer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: true) { [weak self] _ in
+            Task { [weak self] in
+                guard let self else { return }
+                if let updatedDevices = await deviceManager.fetchDevices(serverIp: serverIp, serverPort: serverPort) {
+                    devices = updatedDevices
+                }
             }
         }
     }
-    
+
     func stopFetching() {
         timer?.invalidate()
         timer = nil
-    }
-
-    @MainActor
-    func fetchDevices(serverIp: String, serverPort: String) async {
-        
-        // Ensure the URL is properly formatted
-        guard let url = URL(string: "http://\(serverIp):\(serverPort)/devices") else {
-            print("Invalid URL")
-            return
-        }
-
-        do {
-            var urlRequest = URLRequest(url: url)
-            urlRequest.httpMethod = "GET" // Explicitly set HTTP method
-            
-            // Optional: Add headers if required by the server
-            urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
-
-            let (data, response) = try await URLSession.shared.data(for: urlRequest)
-            
-            // Check for HTTP errors
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
-                print("HTTP Error: \(httpResponse.statusCode)")
-                return
-            }
-
-            let deviceList = try JSONDecoder().decode([Device].self, from: data)
-
-            devices = deviceList // Assuming `devices` is a @State or @Published variable
-            print("Devices fetched")
-
-        } catch {
-            print("Failed to fetch device list: \(error)")
-        }
     }
 }
