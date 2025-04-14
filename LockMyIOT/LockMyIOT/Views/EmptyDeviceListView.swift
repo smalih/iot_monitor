@@ -29,7 +29,7 @@ struct EmptyDeviceListView: View {
             Button(action: {
                 dismiss() // Go back to the previous screen
             }) {
-                Text("Go Back")
+                Text("Disconnect")
                     .font(.headline)
                     .foregroundColor(.white)
                     .padding()

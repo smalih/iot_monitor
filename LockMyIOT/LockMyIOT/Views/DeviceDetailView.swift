@@ -52,6 +52,12 @@ struct DeviceDetailView: View {
                         .foregroundColor(device.status.color)
                         .font(.body)
                 }
+                if device.status == .unsecure {
+                    Text(device.message)
+                        .foregroundColor(device.status.color)
+                        .font(.body)
+                }
+                
             }
             .padding(.horizontal)
             

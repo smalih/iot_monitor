@@ -8,9 +8,11 @@
 import SwiftUI
 
 struct WelcomeView: View {
+    
+    @AppStorage("isFirstLaunch") private var isFirstLaunch: Bool = true
     @AppStorage("serverIp") private var serverIp: String = ""
     @AppStorage("serverPort") private var serverPort: String = ""
-    @State private var showDeviceList = false
+//    @State private var showDeviceList = false redundant??
     private let logoHeight: CGFloat = 200
     
     var canNotConnectToServer: Bool {
@@ -68,6 +70,8 @@ struct WelcomeView: View {
                     Spacer() // Pushes the button to the right
                     Button("Done") {
                         // Resign the first responder (dismiss the keyboard)
+                        isFirstLaunch = false
+                        print("Done button")
                         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                     }
                 }
