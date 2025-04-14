@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DeviceListView: View {
-    @AppStorage("isFIrstLaunch") private var isFirstLaunch = false
+    @AppStorage("isFirstLaunch") private var isFirstLaunch = false
     @AppStorage("serverIp") private var storedServerIp: String = ""
     @AppStorage("serverPort") private var storedServerPort: String = ""
     
@@ -55,7 +55,12 @@ struct DeviceListView: View {
                         
                         HStack {
                             Button(action: {
-                                dismiss() // Go back to the previous screen
+                                print("hello")
+//                                dismiss() // Go back to the previous screen
+                                isNavigating = true
+                                storedServerIp = ""
+                                storedServerPort = ""
+                                isFirstLaunch = false
                             }) {
                                 Text("Disconnect")
                                     .font(.headline)

@@ -28,9 +28,6 @@ from scripts.ids import classify_data
 # from scripts.analyse import run_cicflowmeter
 
 
-
-
-
 class DeviceType(Enum):
     PHONE = "PHONE"
     SPEAKER = "SPEAKER"
@@ -66,7 +63,7 @@ cur = conn.cursor()
 
 # print(os.environ["DB_PASSWORD"])
 
-# Execute a command: this creates a new table
+# Execute a command: this creates a new table 
 cur.execute("DROP TABLE IF EXISTS devices, packets;")
 
 cur.execute("CREATE TABLE devices (id SERIAL PRIMARY KEY,"

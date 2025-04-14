@@ -9,7 +9,11 @@ import SwiftUI
 
 struct EmptyDeviceListView: View {
     @Environment(\.dismiss) var dismiss // Used to go back to the previous screen
+    @AppStorage("isFirstLaunch") private var isFirstLaunch = false
+    @AppStorage("serverIp") private var storedServerIp: String = ""
+    @AppStorage("serverPort") private var storedServerPort: String = ""
     
+    @State private var isNavigating: Bool = false;
     var body: some View {
         VStack(spacing: 20) {
             Image(systemName: "exclamationmark.triangle.fill")
@@ -28,6 +32,10 @@ struct EmptyDeviceListView: View {
             
             Button(action: {
                 dismiss() // Go back to the previous screen
+                isNavigating = true
+                storedServerIp = ""
+                storedServerPort = ""
+                isFirstLaunch = false
             }) {
                 Text("Disconnect")
                     .font(.headline)
@@ -40,6 +48,10 @@ struct EmptyDeviceListView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(UIColor.systemGroupedBackground))
         .edgesIgnoringSafeArea(.all)
+        .navigationDestination(isPresented: $isNavigating) {
+            WelcomeView()
+                .navigationBarBackButtonHidden(true)
+        }
     }
 }
 
