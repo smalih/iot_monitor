@@ -55,7 +55,6 @@ struct DeviceListView: View {
                         
                         HStack {
                             Button(action: {
-                                print("hello")
 //                                dismiss() // Go back to the previous screen
                                 isNavigating = true
                                 storedServerIp = ""
