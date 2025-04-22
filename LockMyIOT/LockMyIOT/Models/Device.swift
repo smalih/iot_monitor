@@ -25,8 +25,6 @@ struct Device: Decodable, Identifiable {
         case status
         case message
     }
-    
-    
 
     init(id: Int, name: String, type: DeviceType, ipAddress: String, macAddress: String, status: DeviceStatus, message: String = "") {
         self.id = id
@@ -52,7 +50,7 @@ struct Device: Decodable, Identifiable {
 
 extension Device {
     static let standard = Device(id: 1, name: "iPhone 15", type: .phone, ipAddress: "192.168.1.10", macAddress: "00:1A:2B:3C:4D:5E", status: .secure)
-
+    
     static let mockDevices: [Device] = [
         Device(id: 1, name: "iPhone 15", type: .phone, ipAddress: "192.168.1.10", macAddress: "00:1A:2B:3C:4D:5E", status: .secure),
         Device(id: 2, name: "Google Home", type: .speaker, ipAddress: "192.168.1.20", macAddress: "00:1B:2C:3D:4E:5F", status: .secure),

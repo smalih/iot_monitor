@@ -13,10 +13,9 @@ struct DeviceListView: View {
     @AppStorage("serverPort") private var storedServerPort: String = ""
     
     @Environment(\.dismiss) var dismiss // Used to go back to the previous screen
-    
     @StateObject var viewModel: DeviceListViewModel
+    @State private var isNavigating: Bool = false
     
-    @State private var isNavigating: Bool = false;
     var body: some View {
         NavigationStack {
             // Check if devices are available
@@ -80,12 +79,9 @@ struct DeviceListView: View {
                         }
                     }
                     .background(Color(UIColor.systemGroupedBackground))
-                    
                 }
-                
             }
             .edgesIgnoringSafeArea(.bottom)
-            
         }
         .navigationTitle("Device List")
         .navigationBarTitleDisplayMode(.inline)

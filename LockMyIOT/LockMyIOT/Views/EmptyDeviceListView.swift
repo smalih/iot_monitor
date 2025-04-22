@@ -13,18 +13,17 @@ struct EmptyDeviceListView: View {
     @AppStorage("serverIp") private var storedServerIp: String = ""
     @AppStorage("serverPort") private var storedServerPort: String = ""
     
-    @State private var isNavigating: Bool = false;
+    @State private var isNavigating: Bool = false
+    
     var body: some View {
         VStack(spacing: 20) {
             Image(systemName: "exclamationmark.triangle.fill")
                 .font(.system(size: 50))
                 .foregroundColor(.gray)
-            
             Text("No devices detected")
                 .font(.title2)
                 .foregroundColor(.gray)
                 .padding()
-            
             Text("Ensure you are connected to the server and that your devices are powered on.")
                 .font(.body)
                 .foregroundColor(.gray)

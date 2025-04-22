@@ -8,11 +8,10 @@
 import SwiftUI
 
 struct WelcomeView: View {
-    
     @AppStorage("isFirstLaunch") private var isFirstLaunch: Bool = true
     @AppStorage("serverIp") private var serverIp: String = ""
     @AppStorage("serverPort") private var serverPort: String = ""
-//    @State private var showDeviceList = false redundant??
+    //    @State private var showDeviceList = false redundant??
     private let logoHeight: CGFloat = 200
     
     var canNotConnectToServer: Bool {
@@ -28,7 +27,7 @@ struct WelcomeView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: logoHeight, height: logoHeight) // Adjust the size to fit your needs
-//                    .padding(.top, 100)  Add top padding if you want more space between logo and the fields
+                //                    .padding(.top, 100)  Add top padding if you want more space between logo and the fields
                 Text("Add IP Address and Port Number to connect to the server")
                     .font(.title3) // Increased font size
                     .multilineTextAlignment(.center)
@@ -63,7 +62,7 @@ struct WelcomeView: View {
                 .padding()
             }
             .background(Color(UIColor.systemBackground)) // Set the background color of the whole view
-//            .edgesIgnoringSafeArea(.all)  Ensure background color stretches fully
+            //            .edgesIgnoringSafeArea(.all)  Ensure background color stretches fully
             .navigationBarBackButtonHidden(true) // Hide the back button when navigating
             .toolbar {
                 ToolbarItemGroup(placement: .keyboard) {
@@ -91,7 +90,7 @@ struct WelcomeView: View {
             TextField(placeholder, text: text)
                 .keyboardType(keyboardType)
                 .padding(10) // Increase the padding to add more space inside the TextField
-//                .background(Color.white)
+            //                .background(Color.white)
                 .cornerRadius(12) // Adjust the corner radius to match your design
                 .overlay(
                     RoundedRectangle(cornerRadius: 12) // Match the corner radius

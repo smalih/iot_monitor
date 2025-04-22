@@ -14,15 +14,6 @@ struct ContentView: View {
 
     @State private var checkWelcomeScreen: Bool = true
     var body: some View {
-//        VStack {
-//            Image(systemName: "globe")
-//                .imageScale(.large)
-//                .foregroundStyle(.tint)
-//            Text("Hello, world!")
-//        }
-//        .padding()WHat
-//        DeviceListView()
-
         VStack {
             if checkWelcomeScreen {
                 WelcomeView()

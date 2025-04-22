@@ -8,20 +8,15 @@
 import SwiftUI
 
 struct DeviceDetailView: View {
-    let device: Device
-    
     @State var editMode = false
     @State var nameInEditMode = false
     @State var deviceTypeInEditMode = false
     @State var name = "Test Phone"
+    let device: Device
     
     var body: some View {
         VStack(alignment: .center, spacing: 20) {
             // Device Type Icon (Top Center)
-            
-            
-        
-            
             ZStack {
                 // Center the main item
                 Image(systemName: device.type.icon)
@@ -54,22 +49,15 @@ struct DeviceDetailView: View {
                 }
             }
             .frame(maxWidth: .infinity)
-
             
-            // Device Name (Center)
             HStack {
-                //                Text(device.name)
-                //                    .font(.largeTitle)
-                //                    .bold()
-                //                    .padding(.top, 10)
-                
                 if nameInEditMode {
                     TextField("Name", text: $name)
-                                    .font(.largeTitle)
-                                    .bold()
-                                    .multilineTextAlignment(.center)
-                                    .frame(maxWidth: 300) // Optional width control
-                                    .textFieldStyle(PlainTextFieldStyle())
+                        .font(.largeTitle)
+                        .bold()
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: 300) // Optional width control
+                        .textFieldStyle(PlainTextFieldStyle())
                 } else {
                     Text(name)
                         .font(.largeTitle)
@@ -119,19 +107,6 @@ struct DeviceDetailView: View {
                         .foregroundColor(device.status.color)
                         .font(.body)
                 }
-                
-                
-                
-                //                        Button(action: {
-                //                            self.nameInEditMode.toggle()
-                //                        }) {
-                //                            Text(nameInEditMode ? "Done" : "Edit").font(.system(size: 20)).fontWeight(.light)
-                //                                .foregroundColor(Color.blue)
-                //                        }
-                
-                
-                
-                
             }
             .padding(.horizontal)
             .toolbar {
