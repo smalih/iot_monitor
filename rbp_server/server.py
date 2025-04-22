@@ -74,20 +74,21 @@ cur.execute("CREATE TABLE devices (id SERIAL PRIMARY KEY,"
                                     "ip_addr inet NOT NULL,"
                                     "name varchar (60) DEFAULT 'UNKNOWN',"
                                     "type varchar (60) DEFAULT 'OTHER',"
-                                    "status varchar (8) DEFAULT 'SECURE');"
+                                    "status varchar (8) DEFAULT 'SECURE',"
+                                    "message TEXT DEFAULT '');"
                                     )
 
 cur.execute("CREATE TABLE packets (id serial PRIMARY KEY,"
                                     "source_ip_addr inet NOT NULL,"
                                     "dest_ip_addr inet NOT NULL);")
-# Insert data into the table
-cur.execute("INSERT INTO devices (mac_addr, ip_addr, name, type)"
-            "VALUES (%s, %s, %s, %s)",
-            ("01:23:45:67:89:AB",
-             "192.168.0.1",
-             "Test Phone 2",
-             "PHONE")
-            )
+# # Insert data into the table
+# cur.execute("INSERT INTO devices (mac_addr, ip_addr, name, type)"
+#             "VALUES (%s, %s, %s, %s)",
+#             ("01:23:45:67:89:AB",
+#              "192.168.0.1",
+#              "Test Phone 2",
+#              "PHONE")
+#             )
  
 conn.commit()
 
@@ -100,51 +101,49 @@ conn.close()
 async def get_devices():
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute("SELECT json_agg(row_to_json(t)) FROM (SELECT * FROM devices) t;")
+    cur.execute("SELECT json_agg(row_to_json(t)) FROM (SELECT * FROM devices ORDER BY status DESC) t;")
     devices = cur.fetchone()[0]
     cur.close()
     conn.close()
     print(devices)
     return devices
 
-@app.put("/update")
-def update_device(device_info: DeviceInfo):
-    try:
-        conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute("UPDATE devices "
-                    "SET name = %s,"
-                    "type = %s "
-                    "WHERE id = %s;",
-                    (device_info['name'],
-                    device_info['type'],
-                    device_info['id'])
-                    )
+# @app.put("/update")
+# def update_device(device_info: DeviceInfo):
+#     try:
+#         conn = get_db_connection()
+#         cur = conn.cursor()
+#         cur.execute("UPDATE devices "
+#                     "SET name = %s,"
+#                     "type = %s "
+#                     "WHERE id = %s;",
+#                     (device_info['name'],
+#                     device_info['type'],
+#                     device_info['id'])
+#                     )
         
-        conn.commit()
-        cur.close()
-        conn.close()
-    except Exception:
-        return "An error occurred. Please try again later."
+#         conn.commit()
+#         cur.close()
+#         conn.close()
+#     except Exception:
+#         return "An error occurred. Please try again later."
 
-@app.put("/update")
-def update_device(device_info: DeviceInfo):
+@app.get("/manual_attack")
+def update_device(ip_addr: str = None):
+    msg = f"Detected possible SSH-Brute Force attack (origin: 114.61.87.129) - recommend disabling SSH access on device"
     try:
         conn = get_db_connection()
         cur = conn.cursor()
         cur.execute("UPDATE devices "
-                    "SET name = %s,"
-                    "type = %s "
-                    "WHERE id = %s;",
-                    (device_info['name'],
-                    device_info['type'],
-                    device_info['id'])
-                    )
+                    "SET status = 'UNSECURE', "
+                    "message = %s"
+                    "WHERE ip_addr = %s;", (msg, ip_addr))
         
         conn.commit()
         cur.close()
         conn.close()
-    except Exception:
+    except Exception as e:
+        print(e)
         return "An error occurred. Please try again later."
 
 async def update_from_lease_info():
@@ -155,14 +154,21 @@ async def update_from_lease_info():
 
         # may change to batch update later on
         for device_info in lease_device_info:
+            if 'phone' in device_info.name.lower():
+                device_type = DeviceType.PHONE.value
+            elif 'nest' in device_info.name.lower():
+                device_type = DeviceType.SPEAKER.value
+            else:
+                device_type = DeviceType.OTHER.value
 
             # insert full information if mac_addr not previously recognised
-            cur.execute("INSERT INTO devices (mac_addr, ip_addr, name) "
-                        "VALUES (%s, %s, %s) "
+            cur.execute("INSERT INTO devices (mac_addr, ip_addr, name, type) "
+                        "VALUES (%s, %s, %s, %s) "
                         "ON CONFLICT (mac_addr) DO NOTHING;",
                         (device_info.mac_addr,
                         device_info.ip_addr,
-                        device_info.name)
+                        device_info.name,
+                        device_type)
                         )
             
             # update device ip_addr and name

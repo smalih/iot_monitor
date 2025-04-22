@@ -41,8 +41,10 @@ def get_predictions(data):
     return y_pred
 
 def classify_data(log_path):
-    global n
+    # keep track of pointer position on log file - ensures only new entries are processed
+    global n 
     try:
+        # skip previously processed entries
         new_data = pd.read_csv(log_path, usecols=fields, skiprows=[i for i in range(1, n)])
     except pd.errors.EmptyDataError:
         return
