@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum DeviceType: String, Decodable {
+enum DeviceType: String, Decodable, CaseIterable {
     case phone = "PHONE"
     case speaker = "SPEAKER"
     case other = "OTHER"
@@ -15,11 +15,11 @@ enum DeviceType: String, Decodable {
     var icon: String {
         switch self {
         case .phone:
-            "iphone"
+            return "iphone"
         case .speaker:
-            "homepod.mini.badge.plus.fill"
+            return "homepod.mini.badge.plus.fill"
         case .other:
-            "globe"
+            return "globe"
         }
     }
 }
