@@ -226,7 +226,6 @@ class ThreadTaskRunner:
         self.thread.start()
         print(f"Started {self.name} in background")
 
-
     def stop(self):
         self.running = False
         print(f"{self.name} stopped successfully")
