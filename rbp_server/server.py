@@ -105,25 +105,25 @@ async def get_devices():
     print(devices)
     return devices
 
-# @app.put("/update")
-# def update_device(device_info: DeviceInfo):
-#     try:
-#         conn = get_db_connection()
-#         cur = conn.cursor()
-#         cur.execute("UPDATE devices "
-#                     "SET name = %s,"
-#                     "type = %s "
-#                     "WHERE id = %s;",
-#                     (device_info['name'],
-#                     device_info['type'],
-#                     device_info['id'])
-#                     )
+@app.put("/update")
+def update_device(device_info: DeviceInfo):
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute("UPDATE devices "
+                    "SET name = %s,"
+                    "type = %s "
+                    "WHERE id = %s;",
+                    (device_info['name'],
+                    device_info['type'],
+                    device_info['id'])
+                    )
         
-#         conn.commit()
-#         cur.close()
-#         conn.close()
-#     except Exception:
-#         return "An error occurred. Please try again later."
+        conn.commit()
+        cur.close()
+        conn.close()
+    except Exception:
+        return "An error occurred. Please try again later."
 
 @app.get("/manual_attack")
 def update_device(ip_addr: str = None):

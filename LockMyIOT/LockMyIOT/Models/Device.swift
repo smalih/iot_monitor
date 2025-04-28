@@ -7,15 +7,15 @@
 
 import Foundation
 
-struct Device: Decodable, Identifiable {
+struct Device: Codable, Identifiable {
     let id: Int
-    let name: String
+    var name: String
     var type: DeviceType
     let ipAddress: String
     let macAddress: String
     let status: DeviceStatus
     let message: String
-
+    
     enum CodingKeys: String, CodingKey {
         case id
         case name
@@ -27,7 +27,7 @@ struct Device: Decodable, Identifiable {
     }
     
     
-
+    
     init(id: Int, name: String, type: DeviceType, ipAddress: String, macAddress: String, status: DeviceStatus, message: String = "") {
         self.id = id
         self.name = name
@@ -37,7 +37,7 @@ struct Device: Decodable, Identifiable {
         self.status = status
         self.message = message
     }
-
+    
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(Int.self, forKey: .id)
@@ -48,11 +48,32 @@ struct Device: Decodable, Identifiable {
         self.status = try container.decode(DeviceStatus.self, forKey: .status)
         self.message = try container.decode(String.self, forKey: .message)
     }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(name, forKey: .name)
+        try container.encode(type.rawValue, forKey: .type)
+        try container.encode(ipAddress, forKey: .ipAddress)
+        try container.encode(macAddress, forKey: .macAddress)
+        try container.encode(status.rawValue, forKey: .status)
+        try container.encode(message, forKey: .message)
+    }
+
+    
+    
+    mutating func updateName(to newName: String) {
+        self.name = newName
+    }
+    
+    mutating func updateType(to newType: DeviceType) {
+        self.type = newType
+    }
 }
 
 extension Device {
     static let standard = Device(id: 1, name: "iPhone 15", type: .phone, ipAddress: "192.168.1.10", macAddress: "00:1A:2B:3C:4D:5E", status: .secure)
-
+    
     static let mockDevices: [Device] = [
         Device(id: 1, name: "iPhone 15", type: .phone, ipAddress: "192.168.1.10", macAddress: "00:1A:2B:3C:4D:5E", status: .secure),
         Device(id: 2, name: "Google Home", type: .speaker, ipAddress: "192.168.1.20", macAddress: "00:1B:2C:3D:4E:5F", status: .secure),

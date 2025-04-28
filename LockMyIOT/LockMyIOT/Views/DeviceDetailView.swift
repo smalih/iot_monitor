@@ -8,19 +8,29 @@
 import SwiftUI
 
 struct DeviceDetailView: View {
-    let device: Device
+    @State var device: Device
     
     @State var editMode = false
     @State var nameInEditMode = false
     @State var deviceTypeInEditMode = false
-    @State var name = "Test Phone"
+    @State var name: String
+    
+    @AppStorage("serverIp") var serverIp: String = ""
+    @AppStorage("serverPort") var serverPort: String = ""
+    private let deviceManager: DeviceManagerProtocol
+    
+    init(device: Device) {
+        self.device = device
+        _name = State(initialValue: device.name)
+        deviceManager = DeviceManager()
+    }
     
     var body: some View {
         VStack(alignment: .center, spacing: 20) {
             // Device Type Icon (Top Center)
             
             
-        
+            
             
             ZStack {
                 // Center the main item
@@ -39,8 +49,10 @@ struct DeviceDetailView: View {
                             .opacity(0) // Invisible, but takes up same space
                         Menu {
                             ForEach(DeviceType.allCases, id: \.self) {deviceT in
-                                Button {}
-                                label: {
+                                Button (action: {
+                                    device.updateType(to: deviceT)
+                                }) {
+                                    
                                     Label(deviceT.rawValue, systemImage: deviceT.icon)
                                 }
                             }
@@ -54,7 +66,7 @@ struct DeviceDetailView: View {
                 }
             }
             .frame(maxWidth: .infinity)
-
+            
             
             // Device Name (Center)
             HStack {
@@ -65,19 +77,22 @@ struct DeviceDetailView: View {
                 
                 if nameInEditMode {
                     TextField("Name", text: $name)
-                                    .font(.largeTitle)
-                                    .bold()
-                                    .multilineTextAlignment(.center)
-                                    .frame(maxWidth: 300) // Optional width control
-                                    .textFieldStyle(PlainTextFieldStyle())
+                        .font(.largeTitle)
+                        .bold()
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: 300) // Optional width control
+                        .textFieldStyle(PlainTextFieldStyle())
                 } else {
-                    Text(name)
+                    Text(device.name)
                         .font(.largeTitle)
                         .bold()
                 }
                 
                 if editMode {
                     Button(action: {
+                        if self.nameInEditMode {
+                            device.updateName(to: self.name)
+                        }
                         self.nameInEditMode.toggle()
                     }) {
                         Image(systemName: nameInEditMode ? "checkmark.circle.fill" : "pencil")
@@ -137,9 +152,12 @@ struct DeviceDetailView: View {
             .toolbar {
                 if editMode {
                     Button("Save") {
-                        print("need to send details to server")
-                        editMode = false
+                        Task {
+                            await deviceManager.updateDevice(serverIp: serverIp, serverPort: serverPort, device: device)
+                            editMode = false
+                        }
                     }
+                    
                 }
                 else {
                     Button("Edit") {
