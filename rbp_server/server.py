@@ -19,6 +19,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from pydantic import BaseModel
+from typing import Optional
 from enum import Enum
 
 import uvicorn
@@ -34,11 +35,14 @@ class DeviceType(Enum):
     OTHER = "OTHER"
 
 class DeviceInfo(BaseModel):
-    id: str
+    id: int
     name: str
     type: DeviceType
-    ipAddr: str
-    macAddr: str
+    ip_addr: str
+    mac_addr: str
+    status: Optional[str] = None
+    message: Optional[str] = None
+
     
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -105,11 +109,17 @@ async def get_devices():
     print(devices)
     return devices
 
+@app.get("/update")
+async def get_update():
+    return "Please use the POST method to update device information."
+
+
 @app.put("/update")
 def update_device(device_info: DeviceInfo):
     try:
         conn = get_db_connection()
         cur = conn.cursor()
+        print(device_info)
         cur.execute("UPDATE devices "
                     "SET name = %s,"
                     "type = %s "
@@ -125,6 +135,7 @@ def update_device(device_info: DeviceInfo):
     except Exception:
         return "An error occurred. Please try again later."
 
+# testing purposes only
 @app.get("/manual_attack")
 def update_device(ip_addr: str = None):
     msg = f"Detected possible SSH-Brute Force attack (origin: 114.61.87.129) - recommend disabling SSH access on device"
