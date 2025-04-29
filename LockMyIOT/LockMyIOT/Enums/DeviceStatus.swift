@@ -2,7 +2,6 @@
 //  DeviceStatus.swift
 //  LockMyIOT
 //
-//  Created by Simon Malih on 04/03/2025.
 //
 
 import SwiftUI

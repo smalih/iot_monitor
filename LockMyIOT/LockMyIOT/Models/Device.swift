@@ -26,8 +26,6 @@ struct Device: Codable, Identifiable {
         case message
     }
     
-    
-    
     init(id: Int, name: String, type: DeviceType, ipAddress: String, macAddress: String, status: DeviceStatus, message: String = "") {
         self.id = id
         self.name = name
@@ -59,8 +57,6 @@ struct Device: Codable, Identifiable {
         try container.encode(status.rawValue, forKey: .status)
         try container.encode(message, forKey: .message)
     }
-
-    
     
     mutating func updateName(to newName: String) {
         self.name = newName
@@ -79,7 +75,7 @@ extension Device {
         Device(id: 2, name: "Google Home", type: .speaker, ipAddress: "192.168.1.20", macAddress: "00:1B:2C:3D:4E:5F", status: .secure),
         Device(id: 3, name: "UNKNOWN", type: .other, ipAddress: "192.168.1.35", macAddress: "00:1C:2D:3E:4F:5A", status: .unsecure, message: "DEVICE UNSECURE"),
         Device(id: 4, name: "MacBook Pro", type: .phone, ipAddress: "192.168.1.40", macAddress: "00:1D:2E:3F:4A:5B", status: .secure),
-        Device(id: 5, name: "Amazon Echo", type: .speaker, ipAddress: "192.168.1.50", macAddress: "00:1E:2F:3A:4B:5C", status: .unsecure, message: "DEVICE UNSECURE"),
+        Device(id: 5, name: "Amazon Echo", type: .speaker, ipAddress: "192.168.1.50", macAddress: "00:1E:2F:3A:4B:5C", status: .unsecure, message: "SSH-Brute Force Detected - recommend disabling port 22 (SSH) on this device"),
         Device(id: 6, name: "Android Tablet", type: .phone, ipAddress: "192.168.1.60", macAddress: "00:1F:2A:3B:4C:5D", status: .secure),
         Device(id: 7, name: "UNKNOWN", type: .other, ipAddress: "192.168.1.70", macAddress: "00:2A:3B:4C:5D:6E", status: .unsecure, message: "DEVICE UNSECURE"),
         Device(id: 8, name: "HomePod Mini", type: .speaker, ipAddress: "192.168.1.80", macAddress: "00:2B:3C:4D:5E:6F", status: .secure),
