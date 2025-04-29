@@ -191,10 +191,7 @@ async def update_from_lease_info():
 
 def alert_attack(classification, attack_datetime):
     classification[1]['datetime'] = attack_datetime
-
     print(f"under attack: {classification[1]}")
-
-
     return classification[1].to_json(date_unit='s')
 
 
